@@ -99,9 +99,6 @@
 }
 
 #pragma mark Default Button Background Colors
-- (void) setButtonAction {
-    
-}
 
 - (void)setupForStandardButtons {
 	[self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -130,7 +127,7 @@
 
 - (void)setupAsSmallGreenButton {
 	[self setupAsGreenButton];
-	self.titleLabel.font = [UIFont boldSystemFontOfSize:15];
+	self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
 	self.layer.cornerRadius = 4.0f;
 }
 

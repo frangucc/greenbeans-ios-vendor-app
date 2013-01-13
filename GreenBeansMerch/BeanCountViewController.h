@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "MBProgressHUD.h"
 
-@interface BeanCountViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface BeanCountViewController : UIViewController <MBProgressHUDDelegate> {
     
-    NSMutableArray *pickerObjects;
-    
+    int selectedButton;
+    MBProgressHUD *HUD;
 }
-
-@property (nonatomic, retain) IBOutlet UIPickerView *beanCountPicker;
 
 @end

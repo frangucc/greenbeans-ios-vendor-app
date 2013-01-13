@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SearchPrinters.h"
 #import "MOGlassButton.h"
+#import "ReturnSelectedCellText.h"
+#import "MBProgressHUD.h"
 
-@interface RootViewController : UIViewController {
+@interface RootViewController : UIViewController <MBProgressHUDDelegate> {
     
-    UIScrollView *insetScroller;
-
+    MBProgressHUD *HUD;
+    SearchPrinters *searchView;
+    BOOL active_connections_availiable;
 }
-
-
 
 @end
