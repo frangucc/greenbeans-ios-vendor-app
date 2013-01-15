@@ -17,7 +17,6 @@
 		623B73B916A1DF16000E3C3A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 623B73B816A1DF16000E3C3A /* Default@2x.png */; };
 		623B73BB16A1DF16000E3C3A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 623B73BA16A1DF16000E3C3A /* Default-568h@2x.png */; };
 		623B73BE16A1DF16000E3C3A /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 623B73BD16A1DF16000E3C3A /* RootViewController.m */; };
-		623B73D116A1F023000E3C3A /* StarIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 623B73D016A1F023000E3C3A /* StarIO.framework */; };
 		623B73D516A1F316000E3C3A /* BeanCountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 623B73D316A1F316000E3C3A /* BeanCountViewController.m */; };
 		623B73FF16A1F3E7000E3C3A /* ditch.png in Resources */ = {isa = PBXBuildFile; fileRef = 623B73DD16A1F3E7000E3C3A /* ditch.png */; };
 		623B740016A1F3E7000E3C3A /* gb_barter.png in Resources */ = {isa = PBXBuildFile; fileRef = 623B73DE16A1F3E7000E3C3A /* gb_barter.png */; };
@@ -108,6 +107,7 @@
 		623B752016A3333B000E3C3A /* DisconnectServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 623B751F16A3333A000E3C3A /* DisconnectServer.m */; };
 		623B752516A3382C000E3C3A /* CreateTokenFromServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 623B752416A3382C000E3C3A /* CreateTokenFromServer.m */; };
 		623B752D16A3789A000E3C3A /* back_withText.png in Resources */ = {isa = PBXBuildFile; fileRef = 623B752C16A3789A000E3C3A /* back_withText.png */; };
+		624E3FF316A4FD94002A1EA4 /* StarIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 624E3FF216A4FD94002A1EA4 /* StarIO.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,7 +126,6 @@
 		623B73BA16A1DF16000E3C3A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		623B73BC16A1DF16000E3C3A /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		623B73BD16A1DF16000E3C3A /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		623B73D016A1F023000E3C3A /* StarIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StarIO.framework; path = ../StarIO/StarIO_iOS_SDK_V320/StarIO_iOS_SDK_V320/Distributables/StarIO.framework; sourceTree = "<group>"; };
 		623B73D216A1F316000E3C3A /* BeanCountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeanCountViewController.h; sourceTree = "<group>"; };
 		623B73D316A1F316000E3C3A /* BeanCountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeanCountViewController.m; sourceTree = "<group>"; };
 		623B73DD16A1F3E7000E3C3A /* ditch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ditch.png; sourceTree = "<group>"; };
@@ -238,6 +237,7 @@
 		623B752316A3382C000E3C3A /* CreateTokenFromServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTokenFromServer.h; sourceTree = "<group>"; };
 		623B752416A3382C000E3C3A /* CreateTokenFromServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTokenFromServer.m; sourceTree = "<group>"; };
 		623B752C16A3789A000E3C3A /* back_withText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_withText.png; sourceTree = "<group>"; };
+		624E3FF216A4FD94002A1EA4 /* StarIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StarIO.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,10 +248,10 @@
 				623B74DC16A261FC000E3C3A /* Accelerate.framework in Frameworks */,
 				623B743116A21347000E3C3A /* ExternalAccessory.framework in Frameworks */,
 				623B742816A1FA26000E3C3A /* QuartzCore.framework in Frameworks */,
-				623B73D116A1F023000E3C3A /* StarIO.framework in Frameworks */,
 				623B73A516A1DF16000E3C3A /* UIKit.framework in Frameworks */,
 				623B73A716A1DF16000E3C3A /* Foundation.framework in Frameworks */,
 				623B73A916A1DF16000E3C3A /* CoreGraphics.framework in Frameworks */,
+				624E3FF316A4FD94002A1EA4 /* StarIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,10 +280,10 @@
 		623B73A316A1DF16000E3C3A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				624E3FF216A4FD94002A1EA4 /* StarIO.framework */,
 				623B74DB16A261FC000E3C3A /* Accelerate.framework */,
 				623B743016A21346000E3C3A /* ExternalAccessory.framework */,
 				623B742716A1FA26000E3C3A /* QuartzCore.framework */,
-				623B73D016A1F023000E3C3A /* StarIO.framework */,
 				623B73A416A1DF16000E3C3A /* UIKit.framework */,
 				623B73A616A1DF16000E3C3A /* Foundation.framework */,
 				623B73A816A1DF16000E3C3A /* CoreGraphics.framework */,
@@ -761,7 +761,8 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -793,7 +794,8 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -810,9 +812,12 @@
 		623B73CE16A1DF16000E3C3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../StarIO/StarIO_iOS_SDK_V320/StarIO_iOS_SDK_V320/Distributables\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GreenBeansMerch/GreenBeansMerch-Prefix.pch";
@@ -826,9 +831,12 @@
 		623B73CF16A1DF16000E3C3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../StarIO/StarIO_iOS_SDK_V320/StarIO_iOS_SDK_V320/Distributables\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GreenBeansMerch/GreenBeansMerch-Prefix.pch";
