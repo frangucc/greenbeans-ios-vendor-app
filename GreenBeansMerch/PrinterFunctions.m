@@ -1,9 +1,9 @@
 //
-//  SearchBluetoothPrinter.m
-//  GreenBeansMerch
+// SearchBluetoothPrinter.m
+// GreenBeansMerch
 //
-//  Created by Burchfield, Neil on 1/12/13.
-//  Copyright (c) 2013 Burchfield, Neil. All rights reserved.
+// Created by Burchfield, Neil on 1/12/13.
+// Copyright (c) 2013 Burchfield, Neil. All rights reserved.
 //
 
 #import "PrinterFunctions.h"
@@ -21,45 +21,45 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)OpenCashDrawerWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    SMPort *starPort = NULL;
++ (void) OpenCashDrawerWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    SMPort * starPort = NULL;
+
     @try
     {
-        starPort = [SMPort getPort:portName :portSettings :10000];
+        starPort = [SMPort getPort:portName:portSettings:10000];
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
-        unsigned char opencashdrawer_command[] = {0x07};
-        int totalAmountWritten = [starPort writePort:opencashdrawer_command :0 :1];
+
+        unsigned char opencashdrawer_command[] = { 0x07 };
+        int           totalAmountWritten       = [starPort writePort:opencashdrawer_command:0:1];
         if (totalAmountWritten == 0)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"data not written out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"data not written out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
-    @finally 
+    @finally
     {
         [SMPort releasePort:starPort];
     }
@@ -71,29 +71,29 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)CheckStatusWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    SMPort *starPort = NULL;
++ (void) CheckStatusWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    SMPort * starPort = NULL;
+
     @try
     {
-        starPort = [SMPort getPort:portName :portSettings :10000];
+        starPort = [SMPort getPort:portName:portSettings:10000];
         NSLog(@"");
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
         usleep(1000 * 1000);
-        
+
         StarPrinterStatus_2 status;
-        [starPort getParsedStatus:&status :2];
-        
-        NSString *message = @"";
+        [starPort getParsedStatus:&status:2];
+
+        NSString * message = @"";
         if (status.offline == SM_TRUE)
         {
             message = @"The printer is offline";
@@ -110,25 +110,25 @@
         {
             message = @"The Printer is online";
         }
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Status" 
-                                                        message:message
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Status"
+                                                         message:message
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
         return;
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Get status failed"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Get status failed"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
-    @finally 
+    @finally
     {
         [SMPort releasePort:starPort];
     }
@@ -139,46 +139,47 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  * limit - Selection of the Method to use so specify the bar code size.  This is either 0 or 1. 0 is Use Limit method and 1 is Use Fixed method. See section 3-122 of the manual (Rev 1.12).
- * p1 - The vertical proportion to use.  The value changes with the limit select.  See section 3-122 of the manual (Rev 1.12). 
- * p2 - The horizontal proportion to use.  The value changes with the limit select.  See section 3-122 of the manual (Rev 1.12). 
+ * p1 - The vertical proportion to use.  The value changes with the limit select.  See section 3-122 of the manual (Rev 1.12).
+ * p2 - The horizontal proportion to use.  The value changes with the limit select.  See section 3-122 of the manual (Rev 1.12).
  * securityLevel - This represents how well the bar code can be recovered if it is damaged. This value should be 0 to 8.
  * xDirection - Specifies the X direction size. This value should be from 1 to 10.  It is recommended that the value be 2 or less.
  * aspectRatio - Specifies the ratio of the pdf417.  This values should be from 1 to 10.  It is recommended that this value be 2 or less.
  * barcodeData - Specifies the characters in the pdf417 bar code.
  * barcodeDataSize - Specifies the amount of characters to put in the barcode.  This should be the size of the preceding parameter.
  */
-+ (void)PrintPDF417CodeWithPortname:(NSString *)portName portSettings:(NSString *)portSettings limit:(Limit)limit p1:(unsigned char)p1 p2:(unsigned char)p2 securityLevel:(unsigned char)securityLevel xDirection:(unsigned char)xDirection aspectRatio:(unsigned char)aspectRatio barcodeData:(unsigned char[])barcodeData barcodeDataSize:(unsigned int)barcodeDataSize
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
-    
-    unsigned char setBarCodeSize[] = {0x1b, 0x1d, 0x78, 0x53, 0x30, 0x00, 0x00, 0x00};
++ (void) PrintPDF417CodeWithPortname:(NSString *) portName portSettings:(NSString *) portSettings limit:(Limit) limit p1:(unsigned char) p1 p2:(unsigned char) p2 securityLevel:(unsigned char) securityLevel xDirection:(unsigned char) xDirection aspectRatio:(unsigned char) aspectRatio barcodeData:(unsigned char[]) barcodeData barcodeDataSize:(unsigned int) barcodeDataSize {
+    NSMutableData * commands = [[NSMutableData alloc] init];
+
+    unsigned char setBarCodeSize[] = { 0x1b, 0x1d, 0x78, 0x53, 0x30, 0x00, 0x00, 0x00 };
+
     switch (limit)
     {
-        case USE_LIMITS:
-            setBarCodeSize[5] = 0;
-            break;
-        case USE_FIXED:
-            setBarCodeSize[5] = 1;
-            break;
+    case USE_LIMITS:
+        setBarCodeSize[5] = 0;
+        break;
+
+    case USE_FIXED:
+        setBarCodeSize[5] = 1;
+        break;
     }
     setBarCodeSize[6] = p1;
     setBarCodeSize[7] = p2;
-    
+
     [commands appendBytes:setBarCodeSize length:8];
-    
-    unsigned char setSecurityLevel[] = {0x1b, 0x1d, 0x78, 0x53, 0x31, 0x00};
+
+    unsigned char setSecurityLevel[] = { 0x1b, 0x1d, 0x78, 0x53, 0x31, 0x00 };
     setSecurityLevel[5] = securityLevel;
     [commands appendBytes:setSecurityLevel length:6];
-    
-    unsigned char setXDirections[] = {0x1b, 0x1d, 0x78, 0x53, 0x32, 0x00};
+
+    unsigned char setXDirections[] = { 0x1b, 0x1d, 0x78, 0x53, 0x32, 0x00 };
     setXDirections[5] = xDirection;
     [commands appendBytes:setXDirections length:6];
-    
-    unsigned char setAspectRatio[] = {0x1b, 0x1d, 0x78, 0x53, 0x33, 0x00};
+
+    unsigned char setAspectRatio[] = { 0x1b, 0x1d, 0x78, 0x53, 0x33, 0x00 };
     setAspectRatio[5] = aspectRatio;
     [commands appendBytes:setAspectRatio length:6];
-    
-    unsigned char *setBarcodeData = (unsigned char*)malloc(6 + barcodeDataSize);
+
+    unsigned char * setBarcodeData = (unsigned char*)malloc(6 + barcodeDataSize);
     setBarcodeData[0] = 0x1b;
     setBarcodeData[1] = 0x1d;
     setBarcodeData[2] = 0x78;
@@ -191,25 +192,25 @@
     }
     [commands appendBytes:setBarcodeData length:6 + barcodeDataSize];
     free(setBarcodeData);
-    
-    unsigned char printBarcode[] = {0x1b, 0x1d, 0x78, 0x50};
+
+    unsigned char printBarcode[] = { 0x1b, 0x1d, 0x78, 0x50 };
     [commands appendBytes:printBarcode length:4];
-    
-    unsigned char *commandsToSendToPrinter = (unsigned char*)malloc([commands length]);
+
+    unsigned char * commandsToSendToPrinter = (unsigned char*)malloc([commands length]);
     [commands getBytes:commandsToSendToPrinter length:[commands length]];
-    unsigned int commandSize = [commands length];
-    
-    SMPort *starPort = NULL;
+    unsigned int  commandSize = [commands length];
+
+    SMPort        * starPort = NULL;
     @try
     {
-        starPort = [SMPort getPort:portName :portSettings :10000];
+        starPort = [SMPort getPort:portName:portSettings:10000];
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
@@ -217,17 +218,17 @@
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:commandsToSendToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:commandsToSendToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -235,98 +236,109 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
-    @finally 
+    @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(commandsToSendToPrinter);
 }
-
 
 /**
  * This function is used to print bar codes in the 39 format
  * context - Activity for displaying messages to the user
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
- * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12). 
+ * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12).
  * barcodeDataSize - This is the number of characters in the barcode.  This should be the size of the preceding parameter
  * option - This tell the printer weather put characters under the printed bar code or not.  This may also be used to line feed after the bar code is printed.
  * height - The height of the bar code.  This is measured in pixels
  * width - The Narrow wide width of the bar code.  This value should be between 1 to 9.  See section 3-42 (Rev. 1.12) for more information on the values.
  */
-+ (void)PrintCode39WithPortname:(NSString*)portName portSettings:(NSString*)portSettings barcodeData:(unsigned char *)barcodeData barcodeDataSize:(unsigned int)barcodeDataSize barcodeOptions:(BarCodeOptions)option height:(unsigned char)height narrowWide:(NarrowWide)width
-{
++ (void) PrintCode39WithPortname:(NSString *) portName portSettings:(NSString *) portSettings barcodeData:(unsigned char *) barcodeData barcodeDataSize:(unsigned int) barcodeDataSize barcodeOptions:(BarCodeOptions) option height:(unsigned char) height narrowWide:(NarrowWide) width {
     unsigned char n1 = 0x34;
     unsigned char n2 = 0;
-    switch (option) {
-        case No_Added_Characters_With_Line_Feed:
-            n2 = 49;
-            break;
-        case Adds_Characters_With_Line_Feed:
-            n2 = 50;
-            break;
-        case No_Added_Characters_Without_Line_Feed:
-            n2 = 51;
-            break;
-        case Adds_Characters_Without_Line_Feed:
-            n2 = 52;
-            break;
+
+    switch (option)
+    {
+    case No_Added_Characters_With_Line_Feed:
+        n2 = 49;
+        break;
+
+    case Adds_Characters_With_Line_Feed:
+        n2 = 50;
+        break;
+
+    case No_Added_Characters_Without_Line_Feed:
+        n2 = 51;
+        break;
+
+    case Adds_Characters_Without_Line_Feed:
+        n2 = 52;
+        break;
     }
     unsigned char n3 = 0;
     switch (width)
     {
-        case NarrowWide_2_6:
-            n3 = 49;
-            break;
-        case NarrowWide_3_9:
-            n3 = 50;
-            break;
-        case NarrowWide_4_12:
-            n3 = 51;
-            break;
-        case NarrowWide_2_5:
-            n3 = 52;
-            break;
-        case NarrowWide_3_8:
-            n3 = 53;
-            break;
-        case NarrowWide_4_10:
-            n3 = 54;
-            break;
-        case NarrowWide_2_4:
-            n3 = 55;
-            break;
-        case NarrowWide_3_6:
-            n3 = 56;
-            break;
-        case NarrowWide_4_8:
-            n3 = 57;
-            break;
+    case NarrowWide_2_6:
+        n3 = 49;
+        break;
+
+    case NarrowWide_3_9:
+        n3 = 50;
+        break;
+
+    case NarrowWide_4_12:
+        n3 = 51;
+        break;
+
+    case NarrowWide_2_5:
+        n3 = 52;
+        break;
+
+    case NarrowWide_3_8:
+        n3 = 53;
+        break;
+
+    case NarrowWide_4_10:
+        n3 = 54;
+        break;
+
+    case NarrowWide_2_4:
+        n3 = 55;
+        break;
+
+    case NarrowWide_3_6:
+        n3 = 56;
+        break;
+
+    case NarrowWide_4_8:
+        n3 = 57;
+        break;
     }
     unsigned char n4 = height;
-    
-    unsigned char *command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
+
+    unsigned char * command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
     command[0] = 0x1b;
     command[1] = 0x62;
     command[2] = n1;
@@ -338,38 +350,38 @@
         command[index + 6] = barcodeData[index];
     }
     command[6 + barcodeDataSize] = 0x1e;
-    
-    int commandSize = 6 + barcodeDataSize + 1;
-    
-    SMPort *starPort = nil;
+
+    int    commandSize = 6 + barcodeDataSize + 1;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:command :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:command:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -377,31 +389,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(command);
 }
 
@@ -409,46 +421,51 @@
  * This function is used to print bar codes in the 93 format
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
- * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12). 
+ * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12).
  * barcodeDataSize - This is the number of characters in the barcode.  This should be the size of the preceding parameter
  * option - This tell the printer weather put characters under the printed bar code or not.  This may also be used to line feed after the bar code is printed.
  * height - The height of the bar code.  This is measured in pixels
  * width - This is the number of dots per module.  This value should be between 1 to 3.  See section 3-42 (Rev. 1.12) for more information on the values.
  */
-+ (void)PrintCode93WithPortname:(NSString*)portName portSettings:(NSString*)portSettings barcodeData: (unsigned char *)barcodeData barcodeDataSize:(unsigned int)barcodeDataSize barcodeOption:(BarCodeOptions)option height:(unsigned char)height min_module_dots:(Min_Mod_Size)width
-{
++ (void) PrintCode93WithPortname:(NSString *) portName portSettings:(NSString *) portSettings barcodeData:(unsigned char *) barcodeData barcodeDataSize:(unsigned int) barcodeDataSize barcodeOption:(BarCodeOptions) option height:(unsigned char) height min_module_dots:(Min_Mod_Size) width {
     unsigned char n1 = 0x37;
     unsigned char n2 = 0;
+
     switch (option)
     {
-        case No_Added_Characters_With_Line_Feed:
-            n2 = 49;
-            break;
-        case Adds_Characters_With_Line_Feed:
-            n2 = 50;
-            break;
-        case No_Added_Characters_Without_Line_Feed:
-            n2 = 51;
-            break;
-        case Adds_Characters_Without_Line_Feed:
-            n2 = 52;
-            break;
+    case No_Added_Characters_With_Line_Feed:
+        n2 = 49;
+        break;
+
+    case Adds_Characters_With_Line_Feed:
+        n2 = 50;
+        break;
+
+    case No_Added_Characters_Without_Line_Feed:
+        n2 = 51;
+        break;
+
+    case Adds_Characters_Without_Line_Feed:
+        n2 = 52;
+        break;
     }
     unsigned char n3 = 0;
     switch (width)
     {
-        case _2_dots:
-            n3 = 49;
-            break;
-        case _3_dots:
-            n3 = 50;
-            break;
-        case _4_dots:
-            n3 = 51;
-            break;
+    case _2_dots:
+        n3 = 49;
+        break;
+
+    case _3_dots:
+        n3 = 50;
+        break;
+
+    case _4_dots:
+        n3 = 51;
+        break;
     }
-    unsigned char n4 = height;
-    unsigned char *command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
+    unsigned char n4        = height;
+    unsigned char * command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
     command[0] = 0x1b;
     command[1] = 0x62;
     command[2] = n1;
@@ -460,38 +477,38 @@
         command[index + 6] = barcodeData[index];
     }
     command[6 + barcodeDataSize] = 0x1e;
-    
-    int commandSize = 6 + barcodeDataSize + 1;
-    
-    SMPort *starPort = nil;
+
+    int    commandSize = 6 + barcodeDataSize + 1;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:command :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:command:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -499,31 +516,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(command);
 }
 
@@ -531,65 +548,76 @@
  * This function is used to print bar codes in the ITF format
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
- * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12). 
+ * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12).
  * barcodeDataSize - This is the number of characters in the barcode.  This should be the size of the preceding parameter
  * option - This tell the printer weather put characters under the printed bar code or not.  This may also be used to line feed after the bar code is printed.
  * height - The height of the bar code.  This is measured in pixels
  * width - This is the number of dots per module.  This value should be between 1 to 3.  See section 3-42 (Rev. 1.12) for more information on the values.
  */
-+ (void)PrintCodeITFWithPortname:(NSString*)portName portSettings:(NSString*)portSettings barcodeData:(unsigned char *)barcodeData barcodeDataSize:(unsigned int)barcodeDataSize barCodeOptions:(BarCodeOptions)option height:(unsigned char)height narrowWide:(NarrowWideV2)width
-{
++ (void) PrintCodeITFWithPortname:(NSString *) portName portSettings:(NSString *) portSettings barcodeData:(unsigned char *) barcodeData barcodeDataSize:(unsigned int) barcodeDataSize barCodeOptions:(BarCodeOptions) option height:(unsigned char) height narrowWide:(NarrowWideV2) width {
     unsigned char n1 = 0x35;
     unsigned char n2 = 0;
+
     switch (option)
     {
-        case No_Added_Characters_With_Line_Feed:
-            n2 = 49;
-            break;
-        case Adds_Characters_With_Line_Feed:
-            n2 = 50;
-            break;
-        case No_Added_Characters_Without_Line_Feed:
-            n2 = 51;
-            break;
-        case Adds_Characters_Without_Line_Feed:
-            n2 = 52;
-            break;
+    case No_Added_Characters_With_Line_Feed:
+        n2 = 49;
+        break;
+
+    case Adds_Characters_With_Line_Feed:
+        n2 = 50;
+        break;
+
+    case No_Added_Characters_Without_Line_Feed:
+        n2 = 51;
+        break;
+
+    case Adds_Characters_Without_Line_Feed:
+        n2 = 52;
+        break;
     }
     unsigned char n3 = 0;
     switch (width)
     {
-        case NarrowWideV2_2_5:
-            n3 = 49;
-            break;
-        case NarrowWideV2_4_10:
-            n3 = 50;
-            break;
-        case NarrowWideV2_6_15:
-            n3 = 51;
-            break;
-        case NarrowWideV2_2_4:
-            n3 = 52;
-            break;
-        case NarrowWideV2_4_8:
-            n3 = 53;
-            break;
-        case NarrowWideV2_6_12:
-            n3 = 54;
-            break;
-        case NarrowWideV2_2_6:
-            n3 = 55;
-            break;
-        case NarrowWideV2_3_9:
-            n3 = 56;
-            break;
-        case NarrowWideV2_4_12:
-            n3 = 57;
-            break;
+    case NarrowWideV2_2_5:
+        n3 = 49;
+        break;
+
+    case NarrowWideV2_4_10:
+        n3 = 50;
+        break;
+
+    case NarrowWideV2_6_15:
+        n3 = 51;
+        break;
+
+    case NarrowWideV2_2_4:
+        n3 = 52;
+        break;
+
+    case NarrowWideV2_4_8:
+        n3 = 53;
+        break;
+
+    case NarrowWideV2_6_12:
+        n3 = 54;
+        break;
+
+    case NarrowWideV2_2_6:
+        n3 = 55;
+        break;
+
+    case NarrowWideV2_3_9:
+        n3 = 56;
+        break;
+
+    case NarrowWideV2_4_12:
+        n3 = 57;
+        break;
     }
-    
-    unsigned char n4 = height;
-    unsigned char *command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
+
+    unsigned char n4        = height;
+    unsigned char * command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
     command[0] = 0x1b;
     command[1] = 0x62;
     command[2] = n1;
@@ -601,37 +629,37 @@
         command[index + 6] = barcodeData[index];
     }
     command[barcodeDataSize + 6] = 0x1e;
-    int commandSize = 6 + barcodeDataSize + 1;
-    
-    SMPort *starPort = nil;
+    int    commandSize = 6 + barcodeDataSize + 1;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:command :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:command:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -639,31 +667,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(command);
 }
 
@@ -671,46 +699,51 @@
  * This function is used to print bar codes in the 128 format
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
- * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12). 
+ * barcodeData - These are the characters that will be printed in the bar code. The characters available for this bar code are listed in section 3-43 (Rev. 1.12).
  * barcodeDataSize - This is the number of characters in the barcode.  This should be the size of the preceding parameter
  * option - This tell the printer weather put characters under the printed bar code or not.  This may also be used to line feed after the bar code is printed.
  * height - The height of the bar code.  This is measured in pixels
  * width - This is the number of dots per module.  This value should be between 1 to 3.  See section 3-42 (Rev. 1.12) for more information on the values.
  */
-+ (void)PrintCode128WidthPortname:(NSString*)portName portSetttings:(NSString*)portSettings barcodeData:(unsigned char *)barcodeData barcodeDataSize:(unsigned int)barcodeDataSize barcodeOption:(BarCodeOptions)option height:(unsigned char)height min_module_dots:(Min_Mod_Size)width
-{
++ (void) PrintCode128WidthPortname:(NSString *) portName portSetttings:(NSString *) portSettings barcodeData:(unsigned char *) barcodeData barcodeDataSize:(unsigned int) barcodeDataSize barcodeOption:(BarCodeOptions) option height:(unsigned char) height min_module_dots:(Min_Mod_Size) width {
     unsigned char n1 = 0x36;
     unsigned char n2 = 0;
+
     switch (option)
     {
-        case No_Added_Characters_With_Line_Feed:
-            n2 = 49;
-            break;
-        case Adds_Characters_With_Line_Feed:
-            n2 = 50;
-            break;
-        case No_Added_Characters_Without_Line_Feed:
-            n2 = 51;
-            break;
-        case Adds_Characters_Without_Line_Feed:
-            n2 = 52;
-            break;
+    case No_Added_Characters_With_Line_Feed:
+        n2 = 49;
+        break;
+
+    case Adds_Characters_With_Line_Feed:
+        n2 = 50;
+        break;
+
+    case No_Added_Characters_Without_Line_Feed:
+        n2 = 51;
+        break;
+
+    case Adds_Characters_Without_Line_Feed:
+        n2 = 52;
+        break;
     }
     unsigned char n3 = 0;
     switch (width)
     {
-        case _2_dots:
-            n3 = 49;
-            break;
-        case _3_dots:
-            n3 = 50;
-            break;
-        case _4_dots:
-            n3 = 51;
-            break;
+    case _2_dots:
+        n3 = 49;
+        break;
+
+    case _3_dots:
+        n3 = 50;
+        break;
+
+    case _4_dots:
+        n3 = 51;
+        break;
     }
-    unsigned char n4 = height;
-    unsigned char *command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
+    unsigned char n4        = height;
+    unsigned char * command = (unsigned char*)malloc(6 + barcodeDataSize + 1);
     command[0] = 0x1b;
     command[1] = 0x62;
     command[2] = n1;
@@ -723,37 +756,37 @@
     }
     command[barcodeDataSize + 6] = 0x1e;
     int commandSize = 6 + barcodeDataSize + 1;
-    
-    
-    SMPort *starPort = nil;
+
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:command :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:command:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -761,31 +794,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(command);
 }
 
@@ -794,94 +827,98 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  * correctionLevel - The correction level for the qrcode.  The correction level can be 7, 15, 25, or 30.  See section 3-129 (Rev. 1.12).
- * model - The model to use when printing the qrcode. See section 3-129 (Rev. 1.12). 
+ * model - The model to use when printing the qrcode. See section 3-129 (Rev. 1.12).
  * cellSize - The cell size of the qrcode.  This value of this should be between 1 and 8. It is recommended that this value be 2 or less.
  * barCodeData - This is the characters in the qrcode.
  * barcodeDataSize - This is the number of characters that will be written into the qrcode.  This is the size of the preceding parameter
  */
-+ (void)PrintQrcodeWithPortname:(NSString*)portName portSettings:(NSString*)portSettings correctionLevel:(CorrectionLevelOption)correctionLevel model:(Model)model cellSize:(unsigned char)cellSize barcodeData:(unsigned char*)barCodeData barcodeDataSize:(unsigned int)barCodeDataSize
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
-    
-    unsigned char modelCommand[] = {0x1b, 0x1d, 0x79, 0x53, 0x30, 0x00};
++ (void) PrintQrcodeWithPortname:(NSString *) portName portSettings:(NSString *) portSettings correctionLevel:(CorrectionLevelOption) correctionLevel model:(Model) model cellSize:(unsigned char) cellSize barcodeData:(unsigned char *) barCodeData barcodeDataSize:(unsigned int) barCodeDataSize {
+    NSMutableData * commands = [[NSMutableData alloc] init];
+
+    unsigned char modelCommand[] = { 0x1b, 0x1d, 0x79, 0x53, 0x30, 0x00 };
+
     switch (model)
     {
-        case Model1:
-            modelCommand[5] = 1;
-            break;
-        case Model2:
-            modelCommand[5] = 2;
-            break;
+    case Model1:
+        modelCommand[5] = 1;
+        break;
+
+    case Model2:
+        modelCommand[5] = 2;
+        break;
     }
-    
+
     [commands appendBytes:modelCommand length:6];
-    
-    unsigned char correctionLevelCommand[] = {0x1b, 0x1d, 0x79, 0x53, 0x31, 0x00};
+
+    unsigned char correctionLevelCommand[] = { 0x1b, 0x1d, 0x79, 0x53, 0x31, 0x00 };
     switch (correctionLevel)
     {
-        case Low:
-            correctionLevelCommand[5] = 0;
-            break;
-        case Middle:
-            correctionLevelCommand[5] = 1;
-            break;
-        case Q:
-            correctionLevelCommand[5] = 2;
-            break;
-        case High:
-            correctionLevelCommand[5] = 3;
-            break;
+    case Low:
+        correctionLevelCommand[5] = 0;
+        break;
+
+    case Middle:
+        correctionLevelCommand[5] = 1;
+        break;
+
+    case Q:
+        correctionLevelCommand[5] = 2;
+        break;
+
+    case High:
+        correctionLevelCommand[5] = 3;
+        break;
     }
     [commands appendBytes:correctionLevelCommand length:6];
-    
-    unsigned char cellCodeSize[] = {0x1b, 0x1d, 0x79, 0x53, 0x32, 0x00};
+
+    unsigned char cellCodeSize[] = { 0x1b, 0x1d, 0x79, 0x53, 0x32, 0x00 };
     cellCodeSize[5] = cellSize;
     [commands appendBytes:cellCodeSize length:6];
-    
-    unsigned char qrcodeStart[] = {0x1b, 0x1d, 0x79, 0x44, 0x31, 0x00};
+
+    unsigned char qrcodeStart[] = { 0x1b, 0x1d, 0x79, 0x44, 0x31, 0x00 };
     [commands appendBytes:qrcodeStart length:6];
-    unsigned char qrcodeLow = barCodeDataSize % 256;
+    unsigned char qrcodeLow  = barCodeDataSize % 256;
     unsigned char qrcodeHigh = barCodeDataSize / 256;
     [commands appendBytes:&qrcodeLow length:1];
     [commands appendBytes:&qrcodeHigh length:1];
     [commands appendBytes:barCodeData length:barCodeDataSize];
-    
-    unsigned char printQrcodeCommand[] = {0x1b, 0x1d, 0x79, 0x50};
+
+    unsigned char printQrcodeCommand[] = { 0x1b, 0x1d, 0x79, 0x50 };
     [commands appendBytes:printQrcodeCommand length:4];
-    
-    unsigned char *commandsToSendToPrinter = (unsigned char*)malloc([commands length]);
+
+    unsigned char * commandsToSendToPrinter = (unsigned char*)malloc([commands length]);
     [commands getBytes:commandsToSendToPrinter];
-    int commandSize = [commands length];
-    
-    SMPort *starPort = nil;
+    int           commandSize = [commands length];
+
+    SMPort        * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:commandsToSendToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:commandsToSendToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -891,28 +928,28 @@
         }
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(commandsToSendToPrinter);
 }
 
@@ -922,56 +959,59 @@
  * portSettings - Should be blank
  * cuttype - The cut type to perform, the cut types are full cut, full cut with feed, partial cut, and partial cut with feed
  */
-+ (void)PreformCutWithPortname:(NSString *)portName portSettings:(NSString*)portSettings cutType:(CutType)cuttype
-{
-    unsigned char autocutCommand[] = {0x1b, 0x64, 0x00};
++ (void) PreformCutWithPortname:(NSString *) portName portSettings:(NSString *) portSettings cutType:(CutType) cuttype {
+    unsigned char autocutCommand[] = { 0x1b, 0x64, 0x00 };
+
     switch (cuttype)
     {
-        case FULL_CUT:
-            autocutCommand[2] = 48;
-            break;
-        case PARCIAL_CUT:
-            autocutCommand[2] = 49;
-            break;
-        case FULL_CUT_FEED:
-            autocutCommand[2] = 50;
-            break;
-        case PARTIAL_CUT_FEED:
-            autocutCommand[2] = 51;
-            break;
+    case FULL_CUT:
+        autocutCommand[2] = 48;
+        break;
+
+    case PARCIAL_CUT:
+        autocutCommand[2] = 49;
+        break;
+
+    case FULL_CUT_FEED:
+        autocutCommand[2] = 50;
+        break;
+
+    case PARTIAL_CUT_FEED:
+        autocutCommand[2] = 51;
+        break;
     }
-    
-    int commandSize = 3;
-    
-    SMPort *starPort = nil;
+
+    int    commandSize = 3;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:autocutCommand :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:autocutCommand:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -979,24 +1019,24 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
@@ -1022,14 +1062,14 @@
  * textData - The text to print
  * textDataSize - The amount of text to send to the printer
  */
-+ (void)PrintTextWithPortname:(NSString *)portName portSettings:(NSString*)portSettings slashedZero:(bool)slashedZero underline:(bool)underline invertColor:(bool)invertColor emphasized:(bool)emphasized upperline:(bool)upperline upsideDown:(bool)upsideDown heightExpansion:(int)heightExpansion widthExpansion:(int)widthExpansion leftMargin:(unsigned char)leftMargin alignment: (Alignment)alignment textData:(unsigned char*)textData textDataSize:(unsigned int)textDataSize
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
-    
-	unsigned char initial[] = {0x1b, 0x40};
-	[commands appendBytes:initial length:2];
-	
-    unsigned char slashedZeroCommand[] = {0x1b, 0x2f, 0x00};
++ (void) PrintTextWithPortname:(NSString *) portName portSettings:(NSString *) portSettings slashedZero:(bool) slashedZero underline:(bool) underline invertColor:(bool) invertColor emphasized:(bool) emphasized upperline:(bool) upperline upsideDown:(bool) upsideDown heightExpansion:(int) heightExpansion widthExpansion:(int) widthExpansion leftMargin:(unsigned char) leftMargin alignment:(Alignment) alignment textData:(unsigned char *) textData textDataSize:(unsigned int) textDataSize {
+    NSMutableData * commands = [[NSMutableData alloc] init];
+
+    unsigned char initial[] = { 0x1b, 0x40 };
+
+    [commands appendBytes:initial length:2];
+
+    unsigned char slashedZeroCommand[] = { 0x1b, 0x2f, 0x00 };
     if (slashedZero)
     {
         slashedZeroCommand[2] = 49;
@@ -1039,8 +1079,8 @@
         slashedZeroCommand[2] = 48;
     }
     [commands appendBytes:slashedZeroCommand length:3];
-    
-    unsigned char underlineCommand[] = {0x1b, 0x2d, 0x00};
+
+    unsigned char underlineCommand[] = { 0x1b, 0x2d, 0x00 };
     if (underline)
     {
         underlineCommand[2] = 49;
@@ -1050,8 +1090,8 @@
         underlineCommand[2] = 48;
     }
     [commands appendBytes:underlineCommand length:3];
-    
-    unsigned char invertColorCommand[] = {0x1b, 0x00};
+
+    unsigned char invertColorCommand[] = { 0x1b, 0x00 };
     if (invertColor)
     {
         invertColorCommand[1] = 0x34;
@@ -1061,8 +1101,8 @@
         invertColorCommand[1] = 0x35;
     }
     [commands appendBytes:invertColorCommand length:2];
-    
-    unsigned char emphasizedPrinting[] = {0x1b, 0x00};
+
+    unsigned char emphasizedPrinting[] = { 0x1b, 0x00 };
     if (emphasized)
     {
         emphasizedPrinting[1] = 69;
@@ -1072,8 +1112,8 @@
         emphasizedPrinting[1] = 70;
     }
     [commands appendBytes:emphasizedPrinting length:2];
-    
-    unsigned char upperLineCommand[] = {0x1b, 0x5f, 0x00};
+
+    unsigned char upperLineCommand[] = { 0x1b, 0x5f, 0x00 };
     if (upperline)
     {
         upperLineCommand[2] = 0x49;
@@ -1083,7 +1123,7 @@
         upperLineCommand[2] = 0x48;
     }
     [commands appendBytes:upperLineCommand length:3];
-    
+
     if (upsideDown)
     {
         unsigned char upsd = 0x0f;
@@ -1094,69 +1134,71 @@
         unsigned char upsd = 0x12;
         [commands appendBytes:&upsd length:1];
     }
-    
-    unsigned char characterExpansion[] = {0x1b, 0x69, 0x00, 0x00};
+
+    unsigned char characterExpansion[] = { 0x1b, 0x69, 0x00, 0x00 };
     characterExpansion[2] = heightExpansion + '0';
     characterExpansion[3] = widthExpansion + '0';
     [commands appendBytes:characterExpansion length:4];
-    
-    unsigned char leftMarginCommand[] = {0x1b, 0x6c, 0x00};
+
+    unsigned char leftMarginCommand[] = { 0x1b, 0x6c, 0x00 };
     leftMarginCommand[2] = leftMargin;
     [commands appendBytes:leftMarginCommand length:3];
-    
-    unsigned char alignmentCommand[] = {0x1b, 0x1d, 0x61, 0x00};
+
+    unsigned char alignmentCommand[] = { 0x1b, 0x1d, 0x61, 0x00 };
     switch (alignment)
     {
-        case Left:
-            alignmentCommand[3] = 48;
-            break;
-        case Center:
-            alignmentCommand[3] = 49;
-            break;
-        case Right:
-            alignmentCommand[3] = 50;
-            break;
+    case Left:
+        alignmentCommand[3] = 48;
+        break;
+
+    case Center:
+        alignmentCommand[3] = 49;
+        break;
+
+    case Right:
+        alignmentCommand[3] = 50;
+        break;
     }
     [commands appendBytes:alignmentCommand length:4];
-    
+
     [commands appendBytes:textData length:textDataSize];
-    
+
     unsigned char lf = 0x0a;
     [commands appendBytes:&lf length:1];
-    
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1164,31 +1206,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1209,27 +1251,27 @@
  * textData - The text to print
  * textDataSize - The amount of text to send to the printer
  */
-+ (void)PrintKanjiTextWithPortname:(NSString *)portName portSettings:(NSString*)portSettings kanjiMode:(int)kanjiMode underline:(bool)underline invertColor:(bool)invertColor emphasized:(bool)emphasized upperline:(bool)upperline upsideDown:(bool)upsideDown heightExpansion:(int)heightExpansion widthExpansion:(int)widthExpansion leftMargin:(unsigned char)leftMargin alignment:(Alignment)alignment textData:(unsigned char*)textData textDataSize:(unsigned int)textDataSize
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
++ (void) PrintKanjiTextWithPortname:(NSString *) portName portSettings:(NSString *) portSettings kanjiMode:(int) kanjiMode underline:(bool) underline invertColor:(bool) invertColor emphasized:(bool) emphasized upperline:(bool) upperline upsideDown:(bool) upsideDown heightExpansion:(int) heightExpansion widthExpansion:(int) widthExpansion leftMargin:(unsigned char) leftMargin alignment:(Alignment) alignment textData:(unsigned char *) textData textDataSize:(unsigned int) textDataSize {
+    NSMutableData * commands = [[NSMutableData alloc] init];
 
-	unsigned char initial[] = {0x1b, 0x40};
-	[commands appendBytes:initial length:2];
-		
-    unsigned char kanjiModeCommand[] = {0x1b, 0x24, 0x00, 0x1b, 0x00};
-    if (kanjiMode == 0)	// Shift-JIS
+    unsigned char initial[] = { 0x1b, 0x40 };
+
+    [commands appendBytes:initial length:2];
+
+    unsigned char kanjiModeCommand[] = { 0x1b, 0x24, 0x00, 0x1b, 0x00 };
+    if (kanjiMode == 0)       // Shift-JIS
     {
         kanjiModeCommand[2] = 0x01;
         kanjiModeCommand[4] = 0x71;
     }
-    else				// JIS
+    else                                    // JIS
     {
         kanjiModeCommand[2] = 0x00;
         kanjiModeCommand[4] = 0x70;
     }
     [commands appendBytes:kanjiModeCommand length:5];
-    
-    unsigned char underlineCommand[] = {0x1b, 0x2d, 0x00};
+
+    unsigned char underlineCommand[] = { 0x1b, 0x2d, 0x00 };
     if (underline)
     {
         underlineCommand[2] = 49;
@@ -1239,8 +1281,8 @@
         underlineCommand[2] = 48;
     }
     [commands appendBytes:underlineCommand length:3];
-    
-    unsigned char invertColorCommand[] = {0x1b, 0x00};
+
+    unsigned char invertColorCommand[] = { 0x1b, 0x00 };
     if (invertColor)
     {
         invertColorCommand[1] = 0x34;
@@ -1250,8 +1292,8 @@
         invertColorCommand[1] = 0x35;
     }
     [commands appendBytes:invertColorCommand length:2];
-    
-    unsigned char emphasizedPrinting[] = {0x1b, 0x00};
+
+    unsigned char emphasizedPrinting[] = { 0x1b, 0x00 };
     if (emphasized)
     {
         emphasizedPrinting[1] = 69;
@@ -1261,8 +1303,8 @@
         emphasizedPrinting[1] = 70;
     }
     [commands appendBytes:emphasizedPrinting length:2];
-    
-    unsigned char upperLineCommand[] = {0x1b, 0x5f, 0x00};
+
+    unsigned char upperLineCommand[] = { 0x1b, 0x5f, 0x00 };
     if (upperline)
     {
         upperLineCommand[2] = 0x49;
@@ -1272,7 +1314,7 @@
         upperLineCommand[2] = 0x48;
     }
     [commands appendBytes:upperLineCommand length:3];
-    
+
     if (upsideDown)
     {
         unsigned char upsd = 0x0f;
@@ -1283,69 +1325,71 @@
         unsigned char upsd = 0x12;
         [commands appendBytes:&upsd length:1];
     }
-    
-    unsigned char characterExpansion[] = {0x1b, 0x69, 0x00, 0x00};
+
+    unsigned char characterExpansion[] = { 0x1b, 0x69, 0x00, 0x00 };
     characterExpansion[2] = heightExpansion + '0';
     characterExpansion[3] = widthExpansion + '0';
     [commands appendBytes:characterExpansion length:4];
-    
-    unsigned char leftMarginCommand[] = {0x1b, 0x6c, 0x00};
+
+    unsigned char leftMarginCommand[] = { 0x1b, 0x6c, 0x00 };
     leftMarginCommand[2] = leftMargin;
     [commands appendBytes:leftMarginCommand length:3];
-    
-    unsigned char alignmentCommand[] = {0x1b, 0x1d, 0x61, 0x00};
+
+    unsigned char alignmentCommand[] = { 0x1b, 0x1d, 0x61, 0x00 };
     switch (alignment)
     {
-        case Left:
-            alignmentCommand[3] = 48;
-            break;
-        case Center:
-            alignmentCommand[3] = 49;
-            break;
-        case Right:
-            alignmentCommand[3] = 50;
-            break;
+    case Left:
+        alignmentCommand[3] = 48;
+        break;
+
+    case Center:
+        alignmentCommand[3] = 49;
+        break;
+
+    case Right:
+        alignmentCommand[3] = 50;
+        break;
     }
     [commands appendBytes:alignmentCommand length:4];
-    
+
     [commands appendBytes:textData length:textDataSize];
-    
+
     unsigned char lf = 0x0a;
     [commands appendBytes:&lf length:1];
-    
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1353,31 +1397,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1389,58 +1433,58 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  * source - the uiimage to convert to star raster data
- * maxWidth - the maximum with the image to print.  This is usually the page with of the printer.  If the image exceeds the maximum width then the image is scaled down.  The ratio is maintained. 
+ * maxWidth - the maximum with the image to print.  This is usually the page with of the printer.  If the image exceeds the maximum width then the image is scaled down.  The ratio is maintained.
  */
-+ (void)PrintImageWithPortname:(NSString *)portName portSettings:(NSString*)portSettings imageToPrint:(UIImage*)imageToPrint maxWidth:(int)maxWidth
-{
-    RasterDocument *rasterDoc = [[RasterDocument alloc] initWithDefaults:RasSpeed_Medium endOfPageBehaviour:RasPageEndMode_FeedAndFullCut endOfDocumentBahaviour:RasPageEndMode_FeedAndFullCut topMargin:RasTopMargin_Standard pageLength:0 leftMargin:0 rightMargin:0];
-    StarBitmap *starbitmap = [[StarBitmap alloc] initWithUIImage:imageToPrint :maxWidth :false];
-    
-    NSMutableData *commandsToPrint = [[NSMutableData alloc]init];
-    NSData *shortcommand = [rasterDoc BeginDocumentCommandData];
++ (void) PrintImageWithPortname:(NSString *) portName portSettings:(NSString *) portSettings imageToPrint:(UIImage *) imageToPrint maxWidth:(int) maxWidth {
+    RasterDocument * rasterDoc  = [[RasterDocument alloc] initWithDefaults:RasSpeed_Medium endOfPageBehaviour:RasPageEndMode_FeedAndFullCut endOfDocumentBahaviour:RasPageEndMode_FeedAndFullCut topMargin:RasTopMargin_Standard pageLength:0 leftMargin:0 rightMargin:0];
+    StarBitmap     * starbitmap = [[StarBitmap alloc] initWithUIImage:imageToPrint:maxWidth:false];
+
+    NSMutableData  * commandsToPrint = [[NSMutableData alloc]init];
+    NSData         * shortcommand    = [rasterDoc BeginDocumentCommandData];
+
     [commandsToPrint appendData:shortcommand];
-    
+
     shortcommand = [starbitmap getImageDataForPrinting];
     [commandsToPrint appendData:shortcommand];
-    
+
     shortcommand = [rasterDoc EndDocumentCommandData];
     [commandsToPrint appendData:shortcommand];
-    
-    int commandSize = [commandsToPrint length];
-    unsigned char *dataToSentToPrinter = (unsigned char*)malloc(commandSize);
+
+    int           commandSize           = [commandsToPrint length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commandsToPrint getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
         NSLog(@"hello");
-        starPort = [SMPort getPort:portName :portSettings :10000];
+        starPort = [SMPort getPort:portName:portSettings:10000];
         NSLog(@"goodbye");
 
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1448,31 +1492,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1481,102 +1525,101 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintSampleReceipt3InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
++ (void) PrintSampleReceipt3InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSMutableData * commands = [[NSMutableData alloc] init];
 
     [commands appendBytes:"\x1b\x1d\x61\x01"
-            length:sizeof("\x1b\x1d\x61\x01") - 1];    // center
+                   length:sizeof("\x1b\x1d\x61\x01") - 1];                                 // center
 
-    [commands appendData:[@"Green's Beans\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"Green's Beans\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
 
-    [commands appendData:[@"1234 Wacker Drive\r\nChicago, IL 60606\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"1234 Wacker Drive\r\nChicago, IL 60606\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
 
     [commands appendBytes:"\x1b\x1d\x61\x00"
-            length:sizeof("\x1b\x1d\x61\x00") - 1];    // Alignment(left)
+                   length:sizeof("\x1b\x1d\x61\x00") - 1];                                 // Alignment(left)
 
     [commands appendBytes:"\x1b\x44\x02\x10\x22\x00"
-            length:sizeof("\x1b\x44\x02\x10\x22\x00") - 1];    // SetHT
+                   length:sizeof("\x1b\x44\x02\x10\x22\x00") - 1];                                 // SetHT
 
-    [commands appendData:[@"Date: 1/13/2013" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"Date: 1/13/2013" dataUsingEncoding : NSASCIIStringEncoding]];
 
     [commands appendBytes:" \x09 "
-            length:sizeof(" \x09 ") - 1];
+                   length:sizeof(" \x09 ") - 1];
 
-    [commands appendData:[@"Time:5:53 PM\r\n--------------------------------\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+    [commands appendData:[@"Time:5:53 PM\r\n--------------------------------\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x45"
-            length:sizeof("\x1b\x45") - 1];    // SetBold
-    
-    [commands appendData:[@"--------------------------------\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Total" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendBytes:"\x09\x09\x1b\x69\x01\x01"
-            length:sizeof("\x09\x09\x1b\x69\x01\x01") - 1];    // SetDoubleHW
+                   length:sizeof("\x1b\x45") - 1];                                 // SetBold
 
-    [commands appendData:[@"$156.95\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"--------------------------------\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"Total" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendBytes:"\x09\x09\x1b\x69\x01\x01"
+                   length:sizeof("\x09\x09\x1b\x69\x01\x01") - 1];                                 // SetDoubleHW
+
+    [commands appendData:[@"$156.95\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
 
     [commands appendBytes:"\x1b\x69\x00\x00"
-            length:sizeof("\x1b\x69\x00\x00") - 1];    // CancelDoubleHW
+                   length:sizeof("\x1b\x69\x00\x00") - 1];                                 // CancelDoubleHW
 
-    [commands appendData:[@"------------------------------------------------\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"------------------------------------------------\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
 
-    [commands appendData:[@"Charge\r\n159.95\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Visa XXXX-XXXX-XXXX-0123\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
+    [commands appendData:[@"Charge\r\n159.95\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
 
-    [commands appendData:[@"\x1b\x34Refunds and Exchanges\x1b\x35\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Within " "\x1b\x2d\x01" "30 days\x1b\x2d\x00" " with receipt\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"And tags attached\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-     
+    [commands appendData:[@"Visa XXXX-XXXX-XXXX-0123\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"\x1b\x34Refunds and Exchanges\x1b\x35\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"Within " "\x1b\x2d\x01" "30 days\x1b\x2d\x00" " with receipt\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"And tags attached\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x1d\x61\x01"
-            length:sizeof("\x1b\x1d\x61\x01") - 1];    // Alignment(center)
+                   length:sizeof("\x1b\x1d\x61\x01") - 1];                                 // Alignment(center)
 
     [commands appendBytes:"\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n"
-            length:sizeof("\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n") - 1];    // PrintBarcode
+                   length:sizeof("\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n") - 1];                                 // PrintBarcode
 
     [commands appendBytes:"\x1b\x64\x02"
-            length:sizeof("\x1b\x64\x02") - 1];    // CutPaper
+                   length:sizeof("\x1b\x64\x02") - 1];                                 // CutPaper
 
     [commands appendBytes:"\x07"
-            length:sizeof("\x07") - 1];    // KickCashDrawer
+                   length:sizeof("\x07") - 1];                                 // KickCashDrawer
 
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1584,31 +1627,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1617,108 +1660,107 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintSampleReceipt4InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
-    
++ (void) PrintSampleReceipt4InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSMutableData * commands = [[NSMutableData alloc] init];
+
     [commands appendBytes:"\x1b\x1d\x61\x01"
-            length:sizeof("\x1b\x1d\x61\x01") - 1];    // center
-    
-    [commands appendData:[@"- Green's Beans -\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"4321 Randall Road\r\nChicago, IL 60606\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x1b\x1d\x61\x01") - 1];                                 // center
+
+    [commands appendData:[@"- Green's Beans -\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"4321 Randall Road\r\nChicago, IL 60606\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x1d\x61\x00"
-            length:sizeof("\x1b\x1d\x61\x00") - 1];    // Alignment(left)
-    
+                   length:sizeof("\x1b\x1d\x61\x00") - 1];                                 // Alignment(left)
+
     [commands appendBytes:"\x1b\x44\x02\x1a\x37\x00"
-            length:sizeof("\x1b\x44\x02\x1a\x37\x00") - 1];    // SetHT
-    
-    [commands appendData:[@"Date: 1/11/2012" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x1b\x44\x02\x1a\x37\x00") - 1];                                 // SetHT
+
+    [commands appendData:[@"Date: 1/11/2012" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:" \x09 "
-            length:sizeof(" \x09 ") - 1];
-    
-    [commands appendData:[@"Time:5:50 PM\r\n" "---------------------------------------------------------------------\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof(" \x09 ") - 1];
+
+    [commands appendData:[@"Time:5:50 PM\r\n" "---------------------------------------------------------------------\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x45"
-            length:sizeof("\x1b\x45") - 1];    // SetBold
-    
-    [commands appendData:[@"SALE \r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x1b\x45") - 1];                                 // SetBold
+
+    [commands appendData:[@"SALE \r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x46"
-            length:sizeof("\x1b\x46") - 1];    // CancelBold
-    
-    [commands appendData:[@"SKU " dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x1b\x46") - 1];                                 // CancelBold
+
+    [commands appendData:[@"SKU " dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x09"
-            length:sizeof("\x09") - 1];    // HT
-    
+                   length:sizeof("\x09") - 1];                                 // HT
+
     [commands appendBytes:"\x09\x09\x1b\x69\x01\x01"
-            length:sizeof("\x09\x09\x1b\x69\x01\x01") - 1];    // SetDoubleHW
-    
-    [commands appendData:[@"$156.95\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x09\x09\x1b\x69\x01\x01") - 1];                                 // SetDoubleHW
+
+    [commands appendData:[@"$156.95\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x69\x00\x00"
-            length:sizeof("\x1b\x69\x00\x00") - 1];    // CancelDoubleHW
-    
-    [commands appendData:[@"---------------------------------------------------------------------\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Charge\r\n159.95\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Visa XXXX-XXXX-XXXX-0123\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"\x1b\x34Refunds and Exchanges\x1b\x35\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"Within " "\x1b\x2d\x01" "30 days\x1b\x2d\x00" " with receipt\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [commands appendData:[@"And tags attached\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding]];
-    
+                   length:sizeof("\x1b\x69\x00\x00") - 1];                                 // CancelDoubleHW
+
+    [commands appendData:[@"---------------------------------------------------------------------\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"Charge\r\n159.95\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"Visa XXXX-XXXX-XXXX-0123\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"\x1b\x34Refunds and Exchanges\x1b\x35\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"Within " "\x1b\x2d\x01" "30 days\x1b\x2d\x00" " with receipt\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
+    [commands appendData:[@"And tags attached\r\n\r\n" dataUsingEncoding : NSASCIIStringEncoding]];
+
     [commands appendBytes:"\x1b\x1d\x61\x01"
-            length:sizeof("\x1b\x1d\x61\x01") - 1];    // Alignment(center)
-    
+                   length:sizeof("\x1b\x1d\x61\x01") - 1];                                 // Alignment(center)
+
     [commands appendBytes:"\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n"
-            length:sizeof("\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n") - 1];    // PrintBarcode
-    
+                   length:sizeof("\x1b\x62\x06\x02\x02\x20" "12ab34cd56\x1e\r\n") - 1];                                 // PrintBarcode
+
     [commands appendBytes:"\x1b\x64\x02"
-            length:sizeof("\x1b\x64\x02") - 1];    // CutPaper
-    
+                   length:sizeof("\x1b\x64\x02") - 1];                                 // CutPaper
+
     [commands appendBytes:"\x07"
-            length:sizeof("\x07") - 1];    // KickCashDrawer
-    
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+                   length:sizeof("\x07") - 1];                                 // KickCashDrawer
+
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1726,31 +1768,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1759,110 +1801,109 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintKanjiSampleReceipt3InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
++ (void) PrintKanjiSampleReceipt3InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSMutableData * commands = [[NSMutableData alloc] init];
 
     [commands appendBytes:"\x1b\x40"
-            length:sizeof("\x1b\x40") - 1];    // Initialization
+                   length:sizeof("\x1b\x40") - 1];                                 // Initialization
 
     [commands appendBytes:"\x1b\x24\x31"
-            length:sizeof("\x1b\x24\x31") - 1];    // 漢字モード設定
+                   length:sizeof("\x1b\x24\x31") - 1];                                 // 漢字モード設定
 
     [commands appendBytes:"\x1b\x1d\x61\x31"
-            length:sizeof("\x1b\x1d\x61\x31") - 1];    // 中央揃え設定
+                   length:sizeof("\x1b\x1d\x61\x31") - 1];                                 // 中央揃え設定
 
     [commands appendBytes:"\x1b\x69\x02\x00"
-            length:sizeof("\x1b\x69\x02\x00") - 1];    // 文字縦拡大設定
+                   length:sizeof("\x1b\x69\x02\x00") - 1];                                 // 文字縦拡大設定
 
     [commands appendBytes:"\x1b\x45"
-            length:sizeof("\x1b\x45") - 1];    // 強調印字設定
+                   length:sizeof("\x1b\x45") - 1];                                 // 強調印字設定
 
-    [commands appendData:[@"スター電機\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"スター電機\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
     [commands appendBytes:"\x1b\x69\x01\x00"
-            length:sizeof("\x1b\x69\x01\x00") - 1];    // 文字縦拡大設定
+                   length:sizeof("\x1b\x69\x01\x00") - 1];                                 // 文字縦拡大設定
 
-    [commands appendData:[@"修理報告書　兼領収書\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"修理報告書　兼領収書\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
     [commands appendBytes:"\x1b\x69\x00\x00"
-            length:sizeof("\x1b\x69\x00\x00") - 1];    // 文字縦拡大解除
+                   length:sizeof("\x1b\x69\x00\x00") - 1];                                 // 文字縦拡大解除
 
     [commands appendBytes:"\x1b\x46"
-            length:sizeof("\x1b\x46") - 1];    // 強調印字解除
+                   length:sizeof("\x1b\x46") - 1];                                 // 強調印字解除
 
-    [commands appendData:[@"------------------------------------------------\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"------------------------------------------------\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
     [commands appendBytes:"\x1b\x1d\x61\x30"
-            length:sizeof("\x1b\x1d\x61\x30") - 1];    //左揃え設定
+                   length:sizeof("\x1b\x1d\x61\x30") - 1];                                 // 左揃え設定
 
-    [commands appendData:[@"発行日時：YYYY年MM月DD日HH時MM分" "\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"発行日時：YYYY年MM月DD日HH時MM分" "\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
-    [commands appendData:[@"TEL：054-347-XXXX\n\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"TEL：054-347-XXXX\n\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
-    [commands appendData:[@"           ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n" dataUsingEncoding:NSShiftJISStringEncoding]];
+    [commands appendData:[@"           ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n" dataUsingEncoding : NSShiftJISStringEncoding]];
 
     [commands appendData:[@"　お名前：池西　静子　様\n"
-                           "　御住所：静岡市清水区七ツ新屋\n"
-                           "　　　　　５３６番地\n"
-                           "　伝票番号：No.12345-67890\n\n"
-                           "　この度は修理をご用命頂き有難うございます。\n"
-                           " 今後も故障など発生した場合はお気軽にご連絡ください。\n\n"
-                          dataUsingEncoding:NSShiftJISStringEncoding]];
+                          "　御住所：静岡市清水区七ツ新屋\n"
+                          "　　　　　５３６番地\n"
+                          "　伝票番号：No.12345-67890\n\n"
+                          "　この度は修理をご用命頂き有難うございます。\n"
+                          " 今後も故障など発生した場合はお気軽にご連絡ください。\n\n"
+ dataUsingEncoding: NSShiftJISStringEncoding]];
 
     [commands appendData:[@"品名／型名　          数量      金額　   備考\n"
-                           "------------------------------------------------\n"
-                           "制御基板　          　  1　　  10,000    配達\n"
-                           "操作スイッチ            1　     3,800　  配達\n"
-                           "パネル　　          　  1       2,000　  配達\n"
-                           "技術料　          　　　1      15,000\n"
-                           "出張費用　　            1　     5,000\n"
-                           "------------------------------------------------\n"
-                          dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+                          "------------------------------------------------\n"
+                          "制御基板　          　  1　　  10,000    配達\n"
+                          "操作スイッチ            1　     3,800　  配達\n"
+                          "パネル　　          　  1       2,000　  配達\n"
+                          "技術料　          　　　1      15,000\n"
+                          "出張費用　　            1　     5,000\n"
+                          "------------------------------------------------\n"
+ dataUsingEncoding: NSShiftJISStringEncoding]];
+
     [commands appendData:[@"\n"
-                           "　　　　　　　       　  　     小計   35,800\n"
-                           "　　　　　　 　　  　      　   内税    1,790\n"
-                           "　　　　　　 　　   　　        合計   37,590\n\n"
-                           "　お問合わせ番号　　12345-67890\n\n\n\n"
-                          dataUsingEncoding:NSShiftJISStringEncoding]];
+                          "　　　　　　　       　  　     小計   35,800\n"
+                          "　　　　　　 　　  　      　   内税    1,790\n"
+                          "　　　　　　 　　   　　        合計   37,590\n\n"
+                          "　お問合わせ番号　　12345-67890\n\n\n\n"
+ dataUsingEncoding: NSShiftJISStringEncoding]];
 
     [commands appendBytes:"\x1b\x64\x33"
-            length:sizeof("\x1b\x64\x33") - 1];    // カット
+                   length:sizeof("\x1b\x64\x33") - 1];                                 // カット
 
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -1870,31 +1911,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -1903,108 +1944,107 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintKanjiSampleReceipt4InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    NSMutableData *commands = [[NSMutableData alloc] init];
-    
-    [commands appendBytes:"\x1b\x40"
-            length:sizeof("\x1b\x40") - 1];    // Initialization
-    
-    [commands appendBytes:"\x1b\x24\x31"
-            length:sizeof("\x1b\x24\x31") - 1];    // 漢字モード設定
-    
-    [commands appendBytes:"\x1b\x1d\x61\x31"
-            length:sizeof("\x1b\x1d\x61\x31") - 1];    // 中央揃え設定
-    
-    [commands appendBytes:"\x1b\x69\x02\x00"
-            length:sizeof("\x1b\x69\x02\x00") - 1];    // 文字縦拡大設定
-    
-    [commands appendBytes:"\x1b\x45"
-            length:sizeof("\x1b\x45") - 1];    // 強調印字設定
-    
-    [commands appendData:[@"スター電機\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
-    [commands appendBytes:"\x1b\x69\x01\x00"
-            length:sizeof("\x1b\x69\x01\x00") - 1];    // 文字縦拡大設定
-    
-    [commands appendData:[@"修理報告書　兼領収書\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
-    [commands appendBytes:"\x1b\x69\x00\x00"
-            length:sizeof("\x1b\x69\x00\x00") - 1];    // 文字縦拡大解除
-    
-    [commands appendBytes:"\x1b\x46"
-            length:sizeof("\x1b\x46") - 1];    // 強調印字解除
++ (void) PrintKanjiSampleReceipt4InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSMutableData * commands = [[NSMutableData alloc] init];
 
-    [commands appendData:[@"---------------------------------------------------------------------\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+    [commands appendBytes:"\x1b\x40"
+                   length:sizeof("\x1b\x40") - 1];                                 // Initialization
+
+    [commands appendBytes:"\x1b\x24\x31"
+                   length:sizeof("\x1b\x24\x31") - 1];                                 // 漢字モード設定
+
+    [commands appendBytes:"\x1b\x1d\x61\x31"
+                   length:sizeof("\x1b\x1d\x61\x31") - 1];                                 // 中央揃え設定
+
+    [commands appendBytes:"\x1b\x69\x02\x00"
+                   length:sizeof("\x1b\x69\x02\x00") - 1];                                 // 文字縦拡大設定
+
+    [commands appendBytes:"\x1b\x45"
+                   length:sizeof("\x1b\x45") - 1];                                 // 強調印字設定
+
+    [commands appendData:[@"スター電機\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
+    [commands appendBytes:"\x1b\x69\x01\x00"
+                   length:sizeof("\x1b\x69\x01\x00") - 1];                                 // 文字縦拡大設定
+
+    [commands appendData:[@"修理報告書　兼領収書\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
+    [commands appendBytes:"\x1b\x69\x00\x00"
+                   length:sizeof("\x1b\x69\x00\x00") - 1];                                 // 文字縦拡大解除
+
+    [commands appendBytes:"\x1b\x46"
+                   length:sizeof("\x1b\x46") - 1];                                 // 強調印字解除
+
+    [commands appendData:[@"---------------------------------------------------------------------\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
     [commands appendBytes:"\x1b\x1d\x61\x30"
-            length:sizeof("\x1b\x1d\x61\x30") - 1];    //左揃え設定
-    
-    [commands appendData:[@"発行日時：YYYY年MM月DD日HH時MM分" "\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
-    [commands appendData:[@"TEL：054-347-XXXX\n\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
-    [commands appendData:[@"           ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+                   length:sizeof("\x1b\x1d\x61\x30") - 1];                                 // 左揃え設定
+
+    [commands appendData:[@"発行日時：YYYY年MM月DD日HH時MM分" "\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
+    [commands appendData:[@"TEL：054-347-XXXX\n\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
+    [commands appendData:[@"           ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
     [commands appendData:[@"　お名前：池西　静子　様\n"
-                           "　御住所：静岡市清水区七ツ新屋\n"
-                           "　　　　　５３６番地\n"
-                           "　伝票番号：No.12345-67890\n\n"
-                           "　この度は修理をご用命頂き有難うございます。\n"
-                          " 今後も故障など発生した場合はお気軽にご連絡ください。\n\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+                          "　御住所：静岡市清水区七ツ新屋\n"
+                          "　　　　　５３６番地\n"
+                          "　伝票番号：No.12345-67890\n\n"
+                          "　この度は修理をご用命頂き有難うございます。\n"
+                          " 今後も故障など発生した場合はお気軽にご連絡ください。\n\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
     [commands appendData:[@"品名／型名　                 数量             金額　          備考\n"
-                           "---------------------------------------------------------------------\n"
-                           "制御基板　                 　  1       　　  10,000           配達\n"
-                           "操作スイッチ                   1　            3,800       　  配達\n"
-                           "パネル　　                 　  1              2,000       　  配達\n"
-                           "技術料       　          　　　1             15,000\n"
-                           "出張費用　　                   1　            5,000\n"
-                           "---------------------------------------------------------------------\n"
-                          dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+                          "---------------------------------------------------------------------\n"
+                          "制御基板　                 　  1       　　  10,000           配達\n"
+                          "操作スイッチ                   1　            3,800       　  配達\n"
+                          "パネル　　                 　  1              2,000       　  配達\n"
+                          "技術料       　          　　　1             15,000\n"
+                          "出張費用　　                   1　            5,000\n"
+                          "---------------------------------------------------------------------\n"
+ dataUsingEncoding: NSShiftJISStringEncoding]];
+
     [commands appendData:[@"\n"
-                           "　　　　　　　       　  　                          小計   35,800\n"
-                           "　                     　　　　　 　　  　      　   内税    1,790\n"
-                           "                     　　　　　　 　　   　　        合計   37,590\n\n"
-                          "　お問合わせ番号　　12345-67890\n\n\n\n" dataUsingEncoding:NSShiftJISStringEncoding]];
-    
+                          "　　　　　　　       　  　                          小計   35,800\n"
+                          "　                     　　　　　 　　  　      　   内税    1,790\n"
+                          "                     　　　　　　 　　   　　        合計   37,590\n\n"
+                          "　お問合わせ番号　　12345-67890\n\n\n\n" dataUsingEncoding : NSShiftJISStringEncoding]];
+
     [commands appendBytes:"\x1b\x64\x33"
-            length:sizeof("\x1b\x64\x33") - 1];    // カット
-    
-    int commandSize = [commands length];
-    unsigned char *dataToSentToPrinter = (unsigned char *)malloc(commandSize);
+                   length:sizeof("\x1b\x64\x33") - 1];                                 // カット
+
+    int           commandSize           = [commands length];
+    unsigned char * dataToSentToPrinter = (unsigned char*)malloc(commandSize);
     [commands getBytes:dataToSentToPrinter];
-    
-    SMPort *starPort = nil;
+
+    SMPort * starPort = nil;
     @try {
-        starPort = [SMPort getPort:portName :portSettings :10000];
-        
+        starPort = [SMPort getPort:portName:portSettings:10000];
+
         if (starPort == nil)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port" 
-                                                            message:@""
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
+                                                             message:@""
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
             return;
         }
-        
+
         struct timeval endTime;
         gettimeofday(&endTime, NULL);
         endTime.tv_sec += 30;
-        
+
         int totalAmountWritten = 0;
         while (totalAmountWritten < commandSize)
         {
             int remaining = commandSize - totalAmountWritten;
-            
+
             int blockSize = (remaining > 1024) ? 1024 : remaining;
-            
-            int amountWritten = [starPort writePort:dataToSentToPrinter :totalAmountWritten :blockSize];
+
+            int amountWritten = [starPort writePort:dataToSentToPrinter:totalAmountWritten:blockSize];
             totalAmountWritten += amountWritten;
-            
+
             struct timeval now;
             gettimeofday(&now, NULL);
             if (now.tv_sec > endTime.tv_sec)
@@ -2012,31 +2052,31 @@
                 break;
             }
         }
-        
+
         if (totalAmountWritten < commandSize)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                            message:@"Write port timed out"
-                                                           delegate:nil 
-                                                  cancelButtonTitle:@"OK" 
-                                                  otherButtonTitles: nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                             message:@"Write port timed out"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
             [alert show];
         }
     }
-    @catch (PortException *exception)
+    @catch (PortException * exception)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Printer Error" 
-                                                        message:@"Write port timed out"
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Printer Error"
+                                                         message:@"Write port timed out"
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
         [alert show];
     }
     @finally
     {
         [SMPort releasePort:starPort];
     }
-    
+
     free(dataToSentToPrinter);
 }
 
@@ -2045,16 +2085,15 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintRasterSampleReceipt3InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    NSString *textToPrint = @"        Star Clothing Boutique\r\n"
++ (void) PrintRasterSampleReceipt3InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSString * textToPrint = @"        Star Clothing Boutique\r\n"
                              "             123 Star Road\r\n"
                              "           City, State 12345\r\n"
-                             "\r\n" 
+                             "\r\n"
                              "Date: MM/DD/YYYY         Time:HH:MM PM\r\n"
                              "--------------------------------------\r\n"
                              "SALE\r\n"
-                             "SKU            Description       Total\r\n" 
+                             "SKU            Description       Total\r\n"
                              "300678566      PLAIN T-SHIRT     10.99\n"
                              "300692003      BLACK DENIM       29.99\n"
                              "300651148      BLUE DENIM        29.99\n"
@@ -2072,47 +2111,53 @@
                              "Refunds and Exchanges\r\n"
                              "Within 30 days with receipt\r\n"
                              "And tags attached\r\n";
-    
-    int width = 576;
-    
-    NSString *fontName = @"Courier";
-    
-    double fontSize = 12.0;
-    
-    //  fontSize *= multiple;
+
+    int      width = 576;
+
+    NSString * fontName = @"Courier";
+
+    double   fontSize = 12.0;
+
+    // fontSize *= multiple;
     fontSize *= 2;
-    
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    
-    CGSize size = CGSizeMake(width, 10000);
-    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
-	
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-		if ([[UIScreen mainScreen] scale] == 2.0) {
-			UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
-		} else {
-			UIGraphicsBeginImageContext(messuredSize);
-		}
-	} else {
-		UIGraphicsBeginImageContext(messuredSize);
-	}
-    
-    CGContextRef ctr = UIGraphicsGetCurrentContext();
-    UIColor *color = [UIColor whiteColor];
+
+    UIFont * font = [UIFont fontWithName:fontName size:fontSize];
+
+    CGSize size         = CGSizeMake(width, 10000);
+    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+    {
+        if ([[UIScreen mainScreen] scale] == 2.0)
+        {
+            UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
+        }
+        else
+        {
+            UIGraphicsBeginImageContext(messuredSize);
+        }
+    }
+    else
+    {
+        UIGraphicsBeginImageContext(messuredSize);
+    }
+
+    CGContextRef ctr     = UIGraphicsGetCurrentContext();
+    UIColor      * color = [UIColor whiteColor];
     [color set];
-    
+
     CGRect rect = CGRectMake(0, 0, messuredSize.width, messuredSize.height);
     CGContextFillRect(ctr, rect);
-    
+
     color = [UIColor blackColor];
     [color set];
-    
-    [textToPrint drawInRect:rect withFont:font lineBreakMode:UILineBreakModeWordWrap];
-    
-    UIImage *imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
-    
+
+    [textToPrint drawInRect:rect withFont:font lineBreakMode:NSLineBreakByWordWrapping];
+
+    UIImage * imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
+
     UIGraphicsEndImageContext();
-    
+
     [PrinterFunctions PrintImageWithPortname:portName portSettings:portSettings imageToPrint:imageToPrint maxWidth:width];
 }
 
@@ -2121,77 +2166,81 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintRasterSampleReceipt4InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    
-    NSString *textToPrint = @"                   Star Clothing Boutique\r\n"
-                            "                        123 Star Road\r\n"
-                            "                      City, State 12345\r\n"
-                            "\r\n" 
-                            "Date: MM/DD/YYYY                            Time:HH:MM PM\r\n"
-                            "---------------------------------------------------------\r\n"
-                            "SALE\r\n"
-                            "SKU                     Description                 Total\r\n" 
-                            "300678566               PLAIN T-SHIRT               10.99\n"
-                            "300692003               BLACK DENIM                 29.99\n"
-                            "300651148               BLUE DENIM                  29.99\n"
-                            "300642980               STRIPED DRESS               49.99\n"
-                            "300638471               BLACK BOOTS                 35.99\n"
-                            "\n"
-                            "Subtotal                                           156.95\r\n"
-                            "Tax                                                  0.00\r\n"
-                            "---------------------------------------------------------\r\n"
-                            "Total                                             $156.95\r\n"
-                            "---------------------------------------------------------\r\n"
-                            "\r\n"
-                            "Charge\r\n159.95\r\n"
-                            "Visa XXXX-XXXX-XXXX-0123\r\n"
-                            "Refunds and Exchanges\r\n"
-                            "Within 30 days with receipt\r\n"
-                            "And tags attached\r\n";
-    
-    int width = 832;
-    
-    NSString *fontName = @"Courier";
-    
-    double fontSize = 12.0;
-    
-//  fontSize *= multiple;
++ (void) PrintRasterSampleReceipt4InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    NSString * textToPrint = @"                   Star Clothing Boutique\r\n"
+                             "                        123 Star Road\r\n"
+                             "                      City, State 12345\r\n"
+                             "\r\n"
+                             "Date: MM/DD/YYYY                            Time:HH:MM PM\r\n"
+                             "---------------------------------------------------------\r\n"
+                             "SALE\r\n"
+                             "SKU                     Description                 Total\r\n"
+                             "300678566               PLAIN T-SHIRT               10.99\n"
+                             "300692003               BLACK DENIM                 29.99\n"
+                             "300651148               BLUE DENIM                  29.99\n"
+                             "300642980               STRIPED DRESS               49.99\n"
+                             "300638471               BLACK BOOTS                 35.99\n"
+                             "\n"
+                             "Subtotal                                           156.95\r\n"
+                             "Tax                                                  0.00\r\n"
+                             "---------------------------------------------------------\r\n"
+                             "Total                                             $156.95\r\n"
+                             "---------------------------------------------------------\r\n"
+                             "\r\n"
+                             "Charge\r\n159.95\r\n"
+                             "Visa XXXX-XXXX-XXXX-0123\r\n"
+                             "Refunds and Exchanges\r\n"
+                             "Within 30 days with receipt\r\n"
+                             "And tags attached\r\n";
+
+    int      width = 832;
+
+    NSString * fontName = @"Courier";
+
+    double   fontSize = 12.0;
+
+// fontSize *= multiple;
     fontSize *= 2;
-    
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    
-    CGSize size = CGSizeMake(width, 10000);
-    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
-	
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-		if ([[UIScreen mainScreen] scale] == 2.0) {
-			UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
-		} else {
-			UIGraphicsBeginImageContext(messuredSize);
-		}
-	} else {
-		UIGraphicsBeginImageContext(messuredSize);
-	}
-    
-    CGContextRef ctr = UIGraphicsGetCurrentContext();
-    UIColor *color = [UIColor whiteColor];
+
+    UIFont * font = [UIFont fontWithName:fontName size:fontSize];
+
+    CGSize size         = CGSizeMake(width, 10000);
+    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+    {
+        if ([[UIScreen mainScreen] scale] == 2.0)
+        {
+            UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
+        }
+        else
+        {
+            UIGraphicsBeginImageContext(messuredSize);
+        }
+    }
+    else
+    {
+        UIGraphicsBeginImageContext(messuredSize);
+    }
+
+    CGContextRef ctr     = UIGraphicsGetCurrentContext();
+    UIColor      * color = [UIColor whiteColor];
     [color set];
 
     CGRect rect = CGRectMake(0, 0, messuredSize.width, messuredSize.height);
     CGContextFillRect(ctr, rect);
-    
+
     color = [UIColor blackColor];
     [color set];
-    
-    UIImage *asd = [UIImage imageNamed:@"itf.gif"];
-    [textToPrint drawInRect:rect withFont:font lineBreakMode:UILineBreakModeWordWrap];
+
+    UIImage * asd = [UIImage imageNamed:@"itf.gif"];
+    [textToPrint drawInRect:rect withFont:font lineBreakMode:NSLineBreakByWordWrapping];
     CGContextDrawImage(ctr, rect, asd.CGImage);
 
-    UIImage *imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
-    
+    UIImage * imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
+
     UIGraphicsEndImageContext();
-    
+
     [PrinterFunctions PrintImageWithPortname:portName portSettings:portSettings imageToPrint:imageToPrint maxWidth:width];
 }
 
@@ -2200,79 +2249,83 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintRasterKanjiSampleReceipt3InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{
-    
-    char *sjisText = "　　　　　　　　　　スター電機\n"
-               "　　　　　　　　修理報告書　兼領収書\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−\r\n"
-               "発行日時：YYYY年MM月DD日HH時MM分\n"
-               "TEL：054-347-XXXX\n\n"
-               "　　　　　ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n"
-               "　お名前：池西　静子　様\n"
-               "　御住所：静岡市清水区七ツ新屋\n"
-               "　　　　　５３６番地\n"
-               "　伝票番号：No.12345-67890\n\n"
-               "　この度は修理をご用命頂き有難うございます。\n"
-               " 今後も故障など発生した場合はお気軽にご連絡ください。\n"
-               "\n"
-               "品名／型名　　　　数量　　　　金額　　　　　備考\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−--------------\r\n"
-               "制御基板　　　　　　１　１０，０００　　　　配達\n"
-               "操作スイッチ　　　　１　　３，８００　　　　配達\n"
-               "パネル　　　　　　　１　　２，０００　　　　配達\n"
-               "技術料　　　　　　　１　１５，０００\n"
-               "出張費用　　　　　　１　　５，０００\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−--------------\r\n"
-               "\n"
-               "　　　　　　　　　　　　　　　小計　３５，８００\n"
-               "　　　　　　　　　　　　　　　内税　　１，７９０\n"
-               "　　　　　　　　　　　　　　　合計　３７，５９０\n"
-               "\n"
-               "　お問合わせ番号　　12345-67890\n\n";
++ (void) PrintRasterKanjiSampleReceipt3InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    char * sjisText = "　　　　　　　　　　スター電機\n"
+                      "　　　　　　　　修理報告書　兼領収書\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−\r\n"
+                      "発行日時：YYYY年MM月DD日HH時MM分\n"
+                      "TEL：054-347-XXXX\n\n"
+                      "　　　　　ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n"
+                      "　お名前：池西　静子　様\n"
+                      "　御住所：静岡市清水区七ツ新屋\n"
+                      "　　　　　５３６番地\n"
+                      "　伝票番号：No.12345-67890\n\n"
+                      "　この度は修理をご用命頂き有難うございます。\n"
+                      " 今後も故障など発生した場合はお気軽にご連絡ください。\n"
+                      "\n"
+                      "品名／型名　　　　数量　　　　金額　　　　　備考\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−--------------\r\n"
+                      "制御基板　　　　　　１　１０，０００　　　　配達\n"
+                      "操作スイッチ　　　　１　　３，８００　　　　配達\n"
+                      "パネル　　　　　　　１　　２，０００　　　　配達\n"
+                      "技術料　　　　　　　１　１５，０００\n"
+                      "出張費用　　　　　　１　　５，０００\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−--------------\r\n"
+                      "\n"
+                      "　　　　　　　　　　　　　　　小計　３５，８００\n"
+                      "　　　　　　　　　　　　　　　内税　　１，７９０\n"
+                      "　　　　　　　　　　　　　　　合計　３７，５９０\n"
+                      "\n"
+                      "　お問合わせ番号　　12345-67890\n\n";
 
-    NSString *textToPrint = [NSString stringWithCString:sjisText encoding:NSUTF8StringEncoding];
+    NSString * textToPrint = [NSString stringWithCString:sjisText encoding:NSUTF8StringEncoding];
 
-    int width = 576;
-    
-    NSString *fontName = @"STHeitiJ-Light";
-    
-    double fontSize = 12.0;
-    
-//  fontSize *= multiple;
+    int      width = 576;
+
+    NSString * fontName = @"STHeitiJ-Light";
+
+    double   fontSize = 12.0;
+
+// fontSize *= multiple;
     fontSize *= 2;
-    
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    
-    CGSize size = CGSizeMake(width, 10000);
-    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
-	
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-		if ([[UIScreen mainScreen] scale] == 2.0) {
-			UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
-		} else {
-			UIGraphicsBeginImageContext(messuredSize);
-		}
-	} else {
-		UIGraphicsBeginImageContext(messuredSize);
-	}
-    
-    CGContextRef ctr = UIGraphicsGetCurrentContext();
-    UIColor *color = [UIColor whiteColor];
+
+    UIFont * font = [UIFont fontWithName:fontName size:fontSize];
+
+    CGSize size         = CGSizeMake(width, 10000);
+    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+    {
+        if ([[UIScreen mainScreen] scale] == 2.0)
+        {
+            UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
+        }
+        else
+        {
+            UIGraphicsBeginImageContext(messuredSize);
+        }
+    }
+    else
+    {
+        UIGraphicsBeginImageContext(messuredSize);
+    }
+
+    CGContextRef ctr     = UIGraphicsGetCurrentContext();
+    UIColor      * color = [UIColor whiteColor];
     [color set];
-    
+
     CGRect rect = CGRectMake(0, 0, messuredSize.width, messuredSize.height);
     CGContextFillRect(ctr, rect);
-    
+
     color = [UIColor blackColor];
     [color set];
-    
-    [textToPrint drawInRect:rect withFont:font lineBreakMode:UILineBreakModeWordWrap];
-    
-    UIImage *imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
-    
+
+    [textToPrint drawInRect:rect withFont:font lineBreakMode:NSLineBreakByWordWrapping];
+
+    UIImage * imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
+
     UIGraphicsEndImageContext();
-    
+
     [PrinterFunctions PrintImageWithPortname:portName portSettings:portSettings imageToPrint:imageToPrint maxWidth:width];
 }
 
@@ -2281,78 +2334,83 @@
  * portName - Port name to use for communication. This should be (TCP:<IPAddress>)
  * portSettings - Should be blank
  */
-+ (void)PrintRasterKanjiSampleReceipt4InchWithPortname:(NSString *)portName portSettings:(NSString *)portSettings
-{    
-    char *sjisText = "　　　　　　　　　　　　　　　スター電機\n"
-               "　　　　　　　　　　　　　修理報告書　兼領収書\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\r\n"
-               "発行日時：YYYY年MM月DD日HH時MM分\n"
-               "TEL：054-347-XXXX\n\n"
-               "　　　　　ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n"
-               "　お名前：池西　静子　様\n"
-               "　御住所：静岡市清水区七ツ新屋\n"
-               "　　　　　５３６番地\n"
-               "　伝票番号：No.12345-67890\n\n"
-               "　この度は修理をご用命頂き有難うございます。\n"
-               " 今後も故障など発生した場合はお気軽にご連絡ください。\n"
-               "\n"
-               "品名／型名　　　　　　　　　数量　　　　　　金額　　　　　　　　備考\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−-------------------\r\n"
-               "制御基板　　　　　　　　　　　１　　　　１０，０００　　　　　　配達\n"
-               "操作スイッチ　　　　　　　　　１　　　　　３，８００　　　　　　配達\n"
-               "パネル　　　　　　　　　　　　１　　　　　２，０００　　　　　　配達\n"
-               "技術料　　　　　　　　　　　　１　　　　１５，０００\n"
-               "出張費用　　　　　　　　　　　１　　　　　５，０００\n"
-               "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−-------------------\r\n"
-               "\n"
-               "　　　　　　　　　　　　　　　　　　　　　　　　　小計　３５，８００\n"
-               "　　　　　　　　　　　　　　　　　　　　　　　　　内税　　１，７９０\n"
-               "　　　　　　　　　　　　　　　　　　　　　　　　　合計　３７，５９０\n"
-               "\n"
-               "　お問合わせ番号　　12345-67890\n\n";
++ (void) PrintRasterKanjiSampleReceipt4InchWithPortname:(NSString *) portName portSettings:(NSString *) portSettings {
+    char * sjisText = "　　　　　　　　　　　　　　　スター電機\n"
+                      "　　　　　　　　　　　　　修理報告書　兼領収書\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−\r\n"
+                      "発行日時：YYYY年MM月DD日HH時MM分\n"
+                      "TEL：054-347-XXXX\n\n"
+                      "　　　　　ｲｹﾆｼ  ｼｽﾞｺ   ｻﾏ\n"
+                      "　お名前：池西　静子　様\n"
+                      "　御住所：静岡市清水区七ツ新屋\n"
+                      "　　　　　５３６番地\n"
+                      "　伝票番号：No.12345-67890\n\n"
+                      "　この度は修理をご用命頂き有難うございます。\n"
+                      " 今後も故障など発生した場合はお気軽にご連絡ください。\n"
+                      "\n"
+                      "品名／型名　　　　　　　　　数量　　　　　　金額　　　　　　　　備考\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−-------------------\r\n"
+                      "制御基板　　　　　　　　　　　１　　　　１０，０００　　　　　　配達\n"
+                      "操作スイッチ　　　　　　　　　１　　　　　３，８００　　　　　　配達\n"
+                      "パネル　　　　　　　　　　　　１　　　　　２，０００　　　　　　配達\n"
+                      "技術料　　　　　　　　　　　　１　　　　１５，０００\n"
+                      "出張費用　　　　　　　　　　　１　　　　　５，０００\n"
+                      "−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−−-------------------\r\n"
+                      "\n"
+                      "　　　　　　　　　　　　　　　　　　　　　　　　　小計　３５，８００\n"
+                      "　　　　　　　　　　　　　　　　　　　　　　　　　内税　　１，７９０\n"
+                      "　　　　　　　　　　　　　　　　　　　　　　　　　合計　３７，５９０\n"
+                      "\n"
+                      "　お問合わせ番号　　12345-67890\n\n";
 
-    NSString *textToPrint = [NSString stringWithCString:sjisText encoding:NSShiftJISStringEncoding];
+    NSString * textToPrint = [NSString stringWithCString:sjisText encoding:NSShiftJISStringEncoding];
 
-    int width = 832;
-    
-    NSString *fontName = @"STHeitiJ-Light";
-    
-    double fontSize = 12.0;
-    
-//  fontSize *= multiple;
+    int      width = 832;
+
+    NSString * fontName = @"STHeitiJ-Light";
+
+    double   fontSize = 12.0;
+
+// fontSize *= multiple;
     fontSize *= 2;
-    
-    UIFont *font = [UIFont fontWithName:fontName size:fontSize];
-    
-    CGSize size = CGSizeMake(width, 10000);
-    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
-	
-	if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
-		if ([[UIScreen mainScreen] scale] == 2.0) {
-			UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
-		} else {
-			UIGraphicsBeginImageContext(messuredSize);
-		}
-	} else {
-		UIGraphicsBeginImageContext(messuredSize);
-	}
-    
-    CGContextRef ctr = UIGraphicsGetCurrentContext();
-    UIColor *color = [UIColor whiteColor];
+
+    UIFont * font = [UIFont fontWithName:fontName size:fontSize];
+
+    CGSize size         = CGSizeMake(width, 10000);
+    CGSize messuredSize = [textToPrint sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+    {
+        if ([[UIScreen mainScreen] scale] == 2.0)
+        {
+            UIGraphicsBeginImageContextWithOptions(messuredSize, NO, 1.0);
+        }
+        else
+        {
+            UIGraphicsBeginImageContext(messuredSize);
+        }
+    }
+    else
+    {
+        UIGraphicsBeginImageContext(messuredSize);
+    }
+
+    CGContextRef ctr     = UIGraphicsGetCurrentContext();
+    UIColor      * color = [UIColor whiteColor];
     [color set];
-    
+
     CGRect rect = CGRectMake(0, 0, messuredSize.width, messuredSize.height);
     CGContextFillRect(ctr, rect);
-    
+
     color = [UIColor blackColor];
     [color set];
-    
-    [textToPrint drawInRect:rect withFont:font lineBreakMode:UILineBreakModeWordWrap];
-    
-    UIImage *imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
-    
+
+    [textToPrint drawInRect:rect withFont:font lineBreakMode:NSLineBreakByWordWrapping];
+
+    UIImage * imageToPrint = UIGraphicsGetImageFromCurrentImageContext();
+
     UIGraphicsEndImageContext();
-    
+
     [PrinterFunctions PrintImageWithPortname:portName portSettings:portSettings imageToPrint:imageToPrint maxWidth:width];
 }
 

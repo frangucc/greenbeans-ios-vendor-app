@@ -9,29 +9,40 @@
 #import "SearchPrinters.h"
 #import "AppDelegate.h"
 
+/*
+   SearchPrinters Implementation
+   --------
+   Author:          Neil Burchfield
+ */
 @implementation SearchPrinters
 
-- (BOOL)searchConnections
-{    
-    BOOL flag;
-    
+/*
+   SearchConnections
+   --------
+   Purpose:        Search for active Bluetooth Printers
+   Parameters:     none
+   Returns:        none
+   Notes:          Return Boolean
+   Author:         Neil Burchfield
+ */
+- (bool) searchConnections {
+    bool flag;
+
     printerArray = [[NSMutableArray alloc] initWithArray:[SMPort searchPrinter]];
-    
-    if ( printerArray.count > 0 )
-    {
+
+    if ( printerArray.count > 0 ) {
         PortInfo *portInfo = [printerArray objectAtIndex:0];
         lastSelectedPortName = portInfo.portName;
         [AppDelegate setPortName:lastSelectedPortName];
         flag = TRUE;
-        NSLog(@"printer found");
-    }
-    else
-    {
+        NSLog(@"Printer --> Found");
+    } else {
         flag = NO;
-        NSLog(@"printer NOT found");
+        NSLog(@"Printer --> NOT Found");
     }
-    
+
     return flag;
-}
+} /* searchConnections */
+
 
 @end

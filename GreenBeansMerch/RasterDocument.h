@@ -8,22 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum
-{
+typedef enum {
     RasTopMargin_Default = 0,
     RasTopMargin_Small = 1,
     RasTopMargin_Standard = 2,
 } RasTopMargin;
 
-typedef enum
-{
+typedef enum {
     RasSpeed_Full = 0,
     RasSpeed_Medium = 1,
     RasSpeed_Low = 2,
 } RasSpeed;
 
-typedef enum
-{
+typedef enum {
     RasPageEndMode_Default = 0,
     RasPageEndMode_None = 1,
     RasPageEndMode_FeedToCutter = 2,
@@ -34,7 +31,7 @@ typedef enum
     RasPageEndMode_FeedAndPartialCut = 7,
     RasPageEndMode_Eject = 8,
     RasPageEndMode_FeedAndEject = 9
-    
+
 } RasPageEndMode;
 
 
@@ -48,16 +45,16 @@ typedef enum
     int mRightMargin;
 }
 
-- (id)init;
-- (id)initWithDefaults:(RasSpeed)speed
-    endOfPageBehaviour:(RasPageEndMode)endOfPageBehaviour_m
-endOfDocumentBahaviour:(RasPageEndMode)endOfDocumentBehaviour_m
-             topMargin:(RasTopMargin)topMargin_m
-            pageLength:(int)pageLength_m
-            leftMargin:(int)leftMargin_m
-           rightMargin:(int)rightMargin_m;
-- (NSData *)BeginDocumentCommandData;
-- (NSData *)EndDocumentCommandData;
-- (NSData *)PageBreakCommandData;
+- (id) init;
+- (id)    initWithDefaults:(RasSpeed)speed
+        endOfPageBehaviour:(RasPageEndMode)endOfPageBehaviour_m
+    endOfDocumentBahaviour:(RasPageEndMode)endOfDocumentBehaviour_m
+                 topMargin:(RasTopMargin)topMargin_m
+                pageLength:(int)pageLength_m
+                leftMargin:(int)leftMargin_m
+               rightMargin:(int)rightMargin_m;
+- (NSData *) BeginDocumentCommandData;
+- (NSData *) EndDocumentCommandData;
+- (NSData *) PageBreakCommandData;
 
 @end

@@ -51,6 +51,5 @@
 - (void)setupAsRedButton;
 - (void)setupAsSmallGreenButton;
 - (void)setupAsSmallRedButton;
-- (void)setupAsGrayButton;
 
 @end

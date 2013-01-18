@@ -9,8 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
+/*
+ CreateTokenFromServer Interface
+ --------
+ Delegate:        NSObject
+ Inheritance:     NSURLConnectionDataDelegate, NSURLConnectionDelegate
+ Author:          Neil Burchfield
+ */
 @interface CreateTokenFromServer : NSObject <NSURLConnectionDataDelegate, NSURLConnectionDelegate> {
-    
+
     NSMutableData *responseData;
 }
 

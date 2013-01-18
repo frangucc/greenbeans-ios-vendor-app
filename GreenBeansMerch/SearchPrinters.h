@@ -9,13 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "StarIO/SMPort.h"
 
+/*
+   SearchPrinters Interface
+   --------
+   Delegate:        NSObject
+   Inheritance:     none
+   Author:          Neil Burchfield
+ */
 @interface SearchPrinters : NSObject {
-    
+
     NSArray *printerArray;
     NSString *lastSelectedPortName;
-    
+
 }
 
-- (BOOL)searchConnections;
+- (bool) searchConnections;
 
 @end

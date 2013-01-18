@@ -6,15 +6,23 @@
 //  Copyright (c) 2013 Burchfield, Neil. All rights reserved.
 //
 
+/* Imports */
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
+/*
+ ConnectServer Interface
+ --------
+ Delegate:        NSObject
+ Inheritance:     NSURLConnectionDataDelegate, NSURLConnectionDelegate
+ Author:          Neil Burchfield
+ */
 @interface ConnectServer : NSObject <NSURLConnectionDataDelegate, NSURLConnectionDelegate> {
-    
-     NSMutableData *responseData;
-     bool createToken;
+
+    NSMutableData *responseData;
+    bool createToken;
 }
 
-- (void) activateSessionWithPOST:(bool)create :(int)quantity;
+- (void) activateSessionWithPOST :(bool)create :(int)quantity;
 
 @end

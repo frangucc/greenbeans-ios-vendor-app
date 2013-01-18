@@ -306,7 +306,6 @@ typedef void (^RNBlurCompletion)(void);
 
 - (id)initWithCoverView:(UIView *)view {
     if (self = [super initWithFrame:CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height)]) {
-        CGRect frame = view.frame;
         _coverView = view;
         UIImage *blur = [_coverView screenshot];
         self.image = [blur boxblurImageWithBlur:kRNDefaultBlurScale];
