@@ -10,13 +10,13 @@ Coming Soon!
 
 The Green Beans merchant application uses the following api:
 
-+ `LockBox`
-+ `SVSegmentedControl`
-+ `Reachability`
-+ `ASI`
-+ `RNBlurModalView`
-+ `MBProgressHUD`
-+ `MOButton`
++ LockBox
++ SVSegmentedControl
++ Reachability
++ ASI
++ RNBlurModalView
++ MBProgressHUD
++ MOButton
 
 ## Methods
 
