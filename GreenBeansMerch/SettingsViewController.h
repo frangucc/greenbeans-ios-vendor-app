@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SampleViewController.h"
+#import "AppDelegate.h"
+#import "SearchPrinterViewController.h"
+#import "AboutViewController.h"
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController <MBProgressHUDDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>{
+    
+    UITableView *settingsTableView;
+    AboutViewController *avc;
+    int viewCount;
+}
+
+- (void) segmentedControlChangedValue:(SVSegmentedControl *)cntl;
 
 @end

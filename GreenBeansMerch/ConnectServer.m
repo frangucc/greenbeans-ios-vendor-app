@@ -7,12 +7,19 @@
 //
 
 #import "ConnectServer.h"
-#import "CreateTokenFromServer.h"
 
-#define TEST_EMAIL @"fran@greenbean.com"
-#define TEST_PASS  @"password"
+#define TEST_EMAIL   @"fran@greenbean.com"
+#define TEST_PASS    @"password"
+#define SESSIONS_URL @"http://greenbean.herokuapp.com/api/sessions.json"
+
+// Private stuff
+@interface ConnectServer ()
+- (void) fetchAuthTokenFailed:(ASIHTTPRequest *)request;
+- (void) fetchAuthTokenComplete:(ASIHTTPRequest *)request;
+@end
 
 @implementation ConnectServer
+@synthesize cache = _cache;
 
 /*
    InitVars
@@ -30,93 +37,80 @@
 
 
 /*
-   ActivateSessionWithPOST
+   InitilizeConcurrentAPISession
    --------
-   Purpose:        Create Post Session
-   Parameters:     create -   to create...or not to
-                 quantity - bean quantity
+   Purpose:        Initilizes ROR API Session
+   Parameters:     none
    Returns:        none
-   Notes:          --
+   Notes:          Sets Authentication Token for Entire Session
    Author:         Neil Burchfield
  */
-- (void) activateSessionWithPOST :(bool)create :(int)quantity {
+- (void) initilizeConcurrentAPISession {
 
-    createToken = create;
+    [self initVars];
 
-    if (createToken) {
-        [AppDelegate setQuantity:quantity];
+    if (!networkQueue) {
+        networkQueue = [[ASINetworkQueue alloc] init];
     }
+    failed = NO;
+    [networkQueue reset];
+    [networkQueue setRequestDidFinishSelector:@selector(fetchAuthTokenComplete:)];
+    [networkQueue setRequestDidFailSelector:@selector(fetchAuthTokenFailed:)];
+    [networkQueue setDelegate:self];
 
+    ASIHTTPRequest *request;
+    request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:SESSIONS_URL]];
     NSString *json = @"merchant[email]=fran@greenbean.com&merchant[password]=password";
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSMutableURLRequest *url = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://greenbean.herokuapp.com/api/sessions.json"]];
-    [url setHTTPBody:data];
-    [url setHTTPMethod:@"POST"];
-    (void)[[NSURLConnection alloc] initWithRequest:url delegate:self];
+    [request setPostBody:(NSMutableData *)data];
 
-} /* activateSessionWithPOST */
+    [networkQueue addOperation:request];
 
+    [networkQueue go];
 
-/*
-   DidReceiveResponse
-   --------
-   Purpose:        Wait for URL response / Alloc data array
-   Author:         Neil Burchfield
- */
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    responseData = [[NSMutableData alloc] init];
-} /* connection */
+} /* fetchThreeImages */
 
 
 /*
-   DidReceiveData
+   FetchAuthTokenFailed
    --------
-   Purpose:        Append incoming data
+   Purpose:        Selector for Queue Failure
+   Parameters:     none
+   Returns:        none
+   Notes:          Handles Failure
    Author:         Neil Burchfield
  */
-- (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [responseData appendData:data];
-} /* connection */
+- (void) fetchAuthTokenFailed:(ASIHTTPRequest *)request {
+    NSLog(@"Response_token %d ==> %@", request.responseStatusCode, [request responseString]);
+} /* fetchTokenFailed */
 
 
 /*
-   DidFailWithError
+   FetchAuthTokenComplete
    --------
-   Purpose:        Handle URL Failure
+   Purpose:        Selector for Queue Success
+   Parameters:     none
+   Returns:        none
+   Notes:          Sets Authentication Token var in Delegate Class
    Author:         Neil Burchfield
  */
-- (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Unable to fetch data");
-} /* connection */
+- (void) fetchAuthTokenComplete:(ASIHTTPRequest *)request {
 
+    NSString *responseString = [request responseString];
+    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:nil];
 
-/*
-   ConnectionDidFinishLoading
-   --------
-   Purpose:        Parse data
-   Author:         Neil Burchfield
- */
-- (void) connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Succeeded! Received %d bytes of data", [responseData length]);
+    NSDictionary *merchant_body = [JSON valueForKey:@"merchant"];
+    authenticationToken = [merchant_body valueForKey:@"authentication_token"];
 
-    NSDictionary *parsedData = [NSJSONSerialization
-                                JSONObjectWithData:responseData // 1
-                                           options:kNilOptions
-                                             error:nil];
+    [AppDelegate setMerchantAuthenticationToken:authenticationToken];
 
-    NSDictionary *merchant_body = [parsedData valueForKey:@"merchant"];
-    NSLog(@"merchant_body: %@", merchant_body);
-
-    NSArray *authToken = [merchant_body valueForKey:@"authentication_token"];
-    NSLog(@"authToken: %@", authToken);
-
-    [AppDelegate setMerchantAuthenticationToken:[merchant_body valueForKey:@"authentication_token"]];
-
-    if (createToken) {
-        CreateTokenFromServer *ct = [[CreateTokenFromServer alloc] init];
-        [ct createTokenWithPOST:[AppDelegate getQuantity]];
-    }
-} /* connectionDidFinishLoading */
+    NSLog(@"Success: %@", [AppDelegate getMerchantAuthenticationToken]);
+    
+    self.cache = [[CacheTokenObjects alloc] init];
+    [self.cache fillApplicationTokenSets];
+} /* fetchAuthTokenComplete */
 
 
 @end

@@ -22,7 +22,6 @@
  */
 - (void) viewDidLoad {
     [super viewDidLoad];
-
     [self drawView];
     [self drawInitButton];
 } /* viewDidLoad */
@@ -56,9 +55,10 @@
     [mascot_view setImage:[UIImage imageNamed:@"bean-mascott"]];
     [self.view addSubview:mascot_view];
 
-    UILabel *slots_header_label = [[UILabel alloc] initWithFrame:CGRectMake(30, 263, 300, 30)];
-    [slots_header_label setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14]];
+    UILabel *slots_header_label = [[UILabel alloc] initWithFrame:CGRectMake(0, 260, 320, 30)];
+    [slots_header_label setFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:16]];
     [slots_header_label setBackgroundColor:[UIColor clearColor]];
+    [slots_header_label setTextAlignment:NSTextAlignmentCenter];
     [slots_header_label setTextColor:[UIColor whiteColor]];
     [slots_header_label setText:@"Why give away Green Beans?"];
     [self.view addSubview:slots_header_label];
@@ -111,7 +111,7 @@
     UIButton *initButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 404, 260, 44)];
     [initButton setBackgroundImage:[UIImage imageNamed:@"gray-action-button-background"] forState:UIControlStateNormal];
     [initButton setBackgroundImage:[UIImage imageNamed:@"gray-action-button-background-pressed"] forState:UIControlStateHighlighted];
-    [initButton addTarget:self action:@selector(showProgress) forControlEvents:UIControlEventTouchUpInside];
+    [initButton addTarget:self action:@selector(directConsumerToLogin) forControlEvents:UIControlEventTouchUpInside];
     [initButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [initButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [initButton setTitle:@"Initialize Application" forState:UIControlStateNormal];
@@ -152,34 +152,51 @@
 
 
 /*
-   ShowProgress
+   DirectConsumerToLogin
    --------
-   Purpose:        Alloc/Create/Add Progress HUD - Search BlueTooth
+   Purpose:        Alloc/Create/Add Progress HUD
    Parameters:     none
    Returns:        none
    Notes:          --
    Author:         Neil Burchfield
  */
-- (void) showProgress {
-    bool test = NO;
-
-    if (test) {
+- (void) directConsumerToLogin {
+    if ([AppDelegate getNetworkAvailibility]) {
         HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:HUD];
 
         HUD.delegate = self;
         HUD.labelText = @"Loading";
-        HUD.detailsLabelText = @"searching printers";
+        HUD.detailsLabelText = @"Logging in...";
         HUD.square = YES;
 
-        [HUD showWhileExecuting:@selector(searchForActiveBluetoothPrinters) onTarget:self withObject:nil animated:YES];
+        [HUD showWhileExecuting:@selector(pushLoginViewController) onTarget:self withObject:nil animated:YES];
     }
-    [self createTabBar];
-} /* showProgress */
-
+    else
+    {
+        blurTitle = @"Network Connection Required";
+        blurMessage = @"Please go to Settings and connect to a 3G/Wireless network";
+        [self displayBlurViewMessage];
+    }
+} /* directConsumerToLogin */
 
 /*
-   SearchForActiveBluetoothPrinters
+ DisplayBlurViewMessage
+ --------
+ Purpose:        General Blur Modal Object
+ Parameters:     -- title
+ -- message
+ Returns:        none
+ Notes:          --
+ Author:         Neil Burchfield
+ */
+- (void) displayBlurViewMessage {
+    RNBlurModalView *blurModalView = [[RNBlurModalView alloc] initWithViewController:self title:blurTitle message:blurMessage];
+    [blurModalView show];
+} /* displayBlurViewMessage */
+
+/*
+   PushLoginViewController
    --------
    Purpose:        SearchViewPrinter Instantiation
    Parameters:     none
@@ -187,78 +204,11 @@
    Notes:          --
    Author:         Neil Burchfield
  */
-- (void) searchForActiveBluetoothPrinters {
-    searchView = [[SearchPrinters alloc] init];
-    active_connections_availiable = [searchView searchConnections];
-} /* searchForActiveBluetoothPrinters */
-
-
-/*
-   CreateTabBar
-   --------
-   Purpose:        Delegate ~ Alloc/Create TabBarController
-   Parameters:     none
-   Returns:        none
-   Notes:          --
-   Author:         Neil Burchfield
- */
-- (void) createTabBar {
-    UITabBarController *tabbar = [[UITabBarController alloc] init];
-
-    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    /*    Alloc and Instantiate Home navigation controller */
-    UIViewController *home = [[HomeViewController alloc] init];
-    UINavigationController *homeTab = [[UINavigationController alloc] initWithRootViewController:home];
-
-    /*    Alloc and Instantiate CreateIncentives navigation controller */
-    UIViewController *create = [[CreateIncentivesViewController alloc] init];
-    UINavigationController *createTab = [[UINavigationController alloc] initWithRootViewController:create];
-
-    /*    Alloc and Instantiate BeansPrinting navigation controller */
-    UIViewController *beanPrint = [[BeanCountViewController alloc] init];
-    UINavigationController *beanTab = [[UINavigationController alloc] initWithRootViewController:beanPrint];
-
-    /*    Alloc and Instantiate Incentives navigation controller */
-    UIViewController *viewIncentives = [[IncentivesViewController alloc] init];
-    UINavigationController *incentTab = [[UINavigationController alloc] initWithRootViewController:viewIncentives];
-
-    /*    Alloc and Instantiate Settings navigation controller */
-    UIViewController *settings = [[SettingsViewController alloc] init];
-    UINavigationController *settingsTab = [[UINavigationController alloc] initWithRootViewController:settings];
-
-    tabbar.viewControllers = [NSArray arrayWithObjects:homeTab, createTab, beanTab, incentTab, settingsTab, nil];
-    [[tabbar.tabBar.items objectAtIndex:0] setTitle:@"Home"];
-    [[tabbar.tabBar.items objectAtIndex:1] setTitle:@"View"];
-    [[tabbar.tabBar.items objectAtIndex:2] setTitle:@""];
-    [[tabbar.tabBar.items objectAtIndex:3] setTitle:@"Create"];
-    [[tabbar.tabBar.items objectAtIndex:4] setTitle:@"Settings"];
-
-    [[tabbar.tabBar.items objectAtIndex:0] setImage:[UIImage imageNamed:@"icon1"]];
-    [[tabbar.tabBar.items objectAtIndex:1] setImage:[UIImage imageNamed:@"icon2"]];
-    [[tabbar.tabBar.items objectAtIndex:2] setImage:[UIImage imageNamed:@""]];
-    [[tabbar.tabBar.items objectAtIndex:3] setImage:[UIImage imageNamed:@"icon3"]];
-    [[tabbar.tabBar.items objectAtIndex:4] setImage:[UIImage imageNamed:@"icon4"]];
-
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIColor whiteColor], UITextAttributeTextColor,
-                                                       [UIFont fontWithName:@"HelveticaNeue-Bold" size:10.5f], UITextAttributeFont, nil]
-                                             forState:UIControlStateHighlighted];
-
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       [UIColor lightTextColor], UITextAttributeTextColor,
-                                                       [UIFont fontWithName:@"HelveticaNeue-Medium" size:10.5f], UITextAttributeFont, nil]
-                                             forState:UIControlStateNormal];
-
-    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UITabBar appearance] setSelectedImageTintColor:[UIColor grayColor]];
-    [[UITabBar appearance] setBackgroundImage:[UIImage imageNamed:@"tabbar_bg_center"]];
-
-    [tabbar setSelectedIndex:tabbar.viewControllers.count % 2 + 1];
-
-    window.rootViewController = tabbar;
-    [self.navigationController pushViewController:tabbar animated:YES];
-} /* createTabBar */
-
+- (void) pushLoginViewController {
+//    SettingsViewController *lvc = [[SettingsViewController alloc] init];
+//    [self.navigationController pushViewController:lvc animated:YES];
+    LoginViewController *lvc = [[LoginViewController alloc] initWithNibName:@"Sample" bundle:[NSBundle mainBundle]];
+    [self.navigationController pushViewController:lvc animated:YES];
+} /* pushLoginViewController */
 
 @end

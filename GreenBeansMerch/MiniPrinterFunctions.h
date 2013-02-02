@@ -41,7 +41,7 @@ typedef enum{
                     barcodeData:(unsigned char*)barcodeData
                 barcodeDataSize:(unsigned char)barcodeDataSize;
 
-+ (void)PrintBitmapWithPortName:(NSString*)portName
++ (BOOL)PrintBitmapWithPortName:(NSString*)portName
                    portSettings:(NSString*)portSettings
                     imageSource:(UIImage*)source
                    printerWidth:(int)maxWidth;

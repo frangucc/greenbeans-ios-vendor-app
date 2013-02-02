@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CustomTableView.h"
+#import "SVSegmentedControl.h"
 
-@interface IncentivesViewController : UIViewController
+@interface IncentivesViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+    
+    UITableView *incentivesTableview;
+    NSArray *headers;
+}
+
+- (void)segmentedControlChangedValue:(SVSegmentedControl*)segmentedControl;
 
 @end

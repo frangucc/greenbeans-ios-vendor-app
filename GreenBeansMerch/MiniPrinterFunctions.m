@@ -156,7 +156,7 @@
  * source - the uiimage to convert to star printer data for portable printers
  * maxWidth - the maximum with the image to print.  This is usually the page with of the printer.  If the image exceeds the maximum width then the image is scaled down.  The ratio is maintained.
  */
-+ (void) PrintBitmapWithPortName:(NSString *)portName portSettings:(NSString *)portSettings imageSource:(UIImage *)source printerWidth:(int)maxWidth {
++ (BOOL) PrintBitmapWithPortName:(NSString *)portName portSettings:(NSString *)portSettings imageSource:(UIImage *)source printerWidth:(int)maxWidth {
 
     StarBitmap *starbitmap = [[StarBitmap alloc] initWithUIImage:source:maxWidth:false];
 
@@ -165,15 +165,7 @@
     {
         starPort = [SMPort getPort:portName:portSettings:10000];
         if (starPort == nil) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Fail to Open Port"
-                                                            message:@""
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-
-
-            return;
+            return NO;
         }
 
         NSData *commands = [starbitmap getImageEscPosDataForPrinting];
@@ -229,7 +221,8 @@
     {
         [SMPort releasePort:starPort];
     }
-
+    
+    return YES;
 
 } /* PrintBitmapWithPortName */
 

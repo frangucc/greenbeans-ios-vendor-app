@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "RootViewController.h"
+#import "UserCredentials.h"
+#import "RootViewController_iPad.h"
 
+@class RootViewController_iPad;
 @class RootViewController;
+@class Reachability;
 
 /*
  AppDelegate Interface
@@ -22,6 +26,11 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) RootViewController *rvc;
+@property (strong, nonatomic) RootViewController_iPad *rvc_iPad;
+@property (strong, nonatomic) Reachability* hostReach;
+@property (strong, nonatomic) Reachability* internetReach;
+@property (strong, nonatomic) Reachability* wifiReach;
+@property (strong, nonatomic) UserCredentials* userCredentials;
 
 /*
  AppDelegate's External Methods
@@ -47,5 +56,10 @@
 + (void) setQuantity:(int)qt;
 + (NSString *) getMerchantToken;
 + (void) setMerchantToken:(NSString *)tok;
-
++ (BOOL) getNetworkAvailibility;
++ (void) setNetworkAvailibility:(BOOL)net;
++ (BOOL) getPrinterAvailibility;
++ (void) setPrinterAvailibility:(BOOL)bt;
++ (BOOL) getRememberMeState;
++ (void) setRememberMeState:(BOOL)flag;
 @end

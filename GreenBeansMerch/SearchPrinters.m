@@ -9,11 +9,6 @@
 #import "SearchPrinters.h"
 #import "AppDelegate.h"
 
-/*
-   SearchPrinters Implementation
-   --------
-   Author:          Neil Burchfield
- */
 @implementation SearchPrinters
 
 /*

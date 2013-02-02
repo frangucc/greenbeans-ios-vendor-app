@@ -7,14 +7,9 @@
 //
 
 /* Imports */
-#import "BeanCountViewController.h"
-#import "IncentivesViewController.h"
-#import "CreateIncentivesViewController.h"
-#import "SettingsViewController.h"
-#import "HomeViewController.h"
 #import <UIKit/UIKit.h>
-#import "SearchPrinters.h"
 #import "MBProgressHUD.h"
+#import "LoginViewController.h"
 
 /*
    RootViewController Interface
@@ -26,8 +21,8 @@
 @interface RootViewController : UIViewController <MBProgressHUDDelegate> {
 
     MBProgressHUD *HUD;
-    SearchPrinters *searchView;
-    BOOL active_connections_availiable;
+    NSString *blurTitle;
+    NSString *blurMessage;
 }
 
 @end

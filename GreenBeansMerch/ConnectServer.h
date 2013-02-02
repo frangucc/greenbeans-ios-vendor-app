@@ -7,8 +7,13 @@
 //
 
 /* Imports */
-#import <Foundation/Foundation.h>
+#import "ASIHTTPRequest.h"
+#import "ASINetworkQueue.h"
+#import "CacheTokenObjects.h"
 #import "AppDelegate.h"
+
+@class ASINetworkQueue;
+@class CacheTokenObjects;
 
 /*
  ConnectServer Interface
@@ -17,12 +22,16 @@
  Inheritance:     NSURLConnectionDataDelegate, NSURLConnectionDelegate
  Author:          Neil Burchfield
  */
-@interface ConnectServer : NSObject <NSURLConnectionDataDelegate, NSURLConnectionDelegate> {
+@interface ConnectServer : NSObject {
+    
+    ASINetworkQueue *networkQueue;
+    NSString *authenticationToken;
+	BOOL failed;
 
-    NSMutableData *responseData;
-    bool createToken;
 }
 
-- (void) activateSessionWithPOST :(bool)create :(int)quantity;
+@property (nonatomic, retain) CacheTokenObjects *cache;
+
+- (void) initilizeConcurrentAPISession;
 
 @end

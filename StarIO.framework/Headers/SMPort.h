@@ -86,7 +86,7 @@
              Notes:           throws PortException on failure
  */
 
-- (u_int32_t)writePort: (u_int8_t const *) writeBuffer: (u_int32_t)offSet: (u_int32_t)size;
+- (u_int32_t)writePort: (u_int8_t const *) writeBuffer :(u_int32_t)offSet :(u_int32_t)size;
 
 /*
  ReadPort
@@ -99,7 +99,7 @@
  Returns:    Aount of data written to the buffer
  Notes:      throws PortException on failure
  */
-- (u_int32_t)readPort: (u_int8_t *) readBuffer: (u_int32_t) offSet: (u_int32_t)size;
+- (u_int32_t)readPort :(u_int8_t *)readBuffer :(u_int32_t)offSet :(u_int32_t)size;
 
 /*
  GetParsedStatus
@@ -111,7 +111,7 @@
  Returns:    none
  Notes:      throws PortException on failure 
  */
-- (void)getParsedStatus: (void *)starPrinterStatus: (u_int32_t)level;
+- (void)getParsedStatus :(void *)starPrinterStatus :(u_int32_t)level;
 
 /*
  GetOnlineStatus
@@ -136,7 +136,7 @@
  Returns:    none
  Notes:      throws PortException on failure
  */
-- (void)beginCheckedBlock: (void *)starPrinterStatus: (u_int32_t)level;
+- (void)beginCheckedBlock :(void *)starPrinterStatus :(u_int32_t)level;
 
 /*
  EndCheckedBlock
@@ -150,7 +150,7 @@
  Returns:    none
  Notes:      throws PortException on failure
  */
-- (void)endCheckedBlock: (void *)starPrinterStatus: (u_int32_t)level;
+- (void)endCheckedBlock :(void *)starPrinterStatus :(u_int32_t)level;
 
 
 - (NSString *)portName;
