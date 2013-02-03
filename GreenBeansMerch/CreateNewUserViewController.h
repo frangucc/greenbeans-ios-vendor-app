@@ -22,24 +22,24 @@
 #import "AuthenticateMerchantLogin.h"
 #import "UserCredentials.h"
 
-#import "CreateNewUserViewController.h"
-
 @class AuthenticateMerchantLogin;
 
 /*
-   LoginViewController Interface
-   --------
-   Delegate:        MBProgressHUDDelegate
-   Subclass:        UIViewController
-   Author:          Neil Burchfield
+ LoginViewController Interface
+ --------
+ Delegate:        MBProgressHUDDelegate
+ Subclass:        UIViewController
+ Author:          Neil Burchfield
  */
-@interface LoginViewController : SampleViewController <MBProgressHUDDelegate, UITextFieldDelegate> {
-
+@interface CreateNewUserViewController : SampleViewController <MBProgressHUDDelegate, UITextFieldDelegate> {
+    
     MBProgressHUD *HUD;
     RNBlurModalView *blurModalView;
     SearchPrinters *searchView;
     UserCredentials *userCreds;
     
+    UITextField *name;
+    UITextField *company;
     UITextField *loginId;
     UITextField *password;
     UILabel *newAccount;

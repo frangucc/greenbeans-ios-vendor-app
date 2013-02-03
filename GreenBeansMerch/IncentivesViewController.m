@@ -22,6 +22,7 @@
     [self drawRootToolbar];
     [self alloc];
     [self drawIncentivesTableview];
+    self.navigationItem.hidesBackButton = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -18,6 +18,8 @@
 		6200921D16B1F42C00139E1C /* selection-tab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6200921B16B1F42C00139E1C /* selection-tab@2x.png */; };
 		6200922116B202D800139E1C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6200922016B202D800139E1C /* Default-568h@2x.png */; };
 		62135C4016AF1E6E00336131 /* SearchPrinterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62135C3E16AF1E6D00336131 /* SearchPrinterViewController.m */; };
+		621F2B5416BDAA0200A97E67 /* CreateNewUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 621F2B5216BDAA0200A97E67 /* CreateNewUserViewController.m */; };
+		621F2B5516BDAA0200A97E67 /* CreateNewUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 621F2B5316BDAA0200A97E67 /* CreateNewUserViewController.xib */; };
 		6237109F16ACD6E500480E6F /* SDGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6237109516ACD6E500480E6F /* SDGroupCell.m */; };
 		623710A216ACD6E500480E6F /* SDNestedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6237109916ACD6E500480E6F /* SDNestedTableViewController.m */; };
 		623710A316ACD6E500480E6F /* SDSelectableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6237109B16ACD6E500480E6F /* SDSelectableCell.m */; };
@@ -217,6 +219,9 @@
 		6200922016B202D800139E1C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		62135C3D16AF1E6D00336131 /* SearchPrinterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPrinterViewController.h; sourceTree = "<group>"; };
 		62135C3E16AF1E6D00336131 /* SearchPrinterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchPrinterViewController.m; sourceTree = "<group>"; };
+		621F2B5116BDAA0200A97E67 /* CreateNewUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateNewUserViewController.h; sourceTree = "<group>"; };
+		621F2B5216BDAA0200A97E67 /* CreateNewUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateNewUserViewController.m; sourceTree = "<group>"; };
+		621F2B5316BDAA0200A97E67 /* CreateNewUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateNewUserViewController.xib; sourceTree = "<group>"; };
 		6237109416ACD6E500480E6F /* SDGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDGroupCell.h; sourceTree = "<group>"; };
 		6237109516ACD6E500480E6F /* SDGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDGroupCell.m; sourceTree = "<group>"; };
 		6237109816ACD6E500480E6F /* SDNestedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDNestedTableViewController.h; sourceTree = "<group>"; };
@@ -514,6 +519,16 @@
 			name = SearchPrinterViewController;
 			sourceTree = "<group>";
 		};
+		621F2B5616BDAA0D00A97E67 /* CreateNewUserViewController */ = {
+			isa = PBXGroup;
+			children = (
+				621F2B5116BDAA0200A97E67 /* CreateNewUserViewController.h */,
+				621F2B5216BDAA0200A97E67 /* CreateNewUserViewController.m */,
+				621F2B5316BDAA0200A97E67 /* CreateNewUserViewController.xib */,
+			);
+			name = CreateNewUserViewController;
+			sourceTree = "<group>";
+		};
 		6237109316ACD6E500480E6F /* SDNestedTable */ = {
 			isa = PBXGroup;
 			children = (
@@ -625,6 +640,7 @@
 				62E6A22216AC596300010475 /* LoginViewController */,
 				62E6A22816AC830A00010475 /* AuthenticateMerchantLogin */,
 				62AB2A6C16BB2D570021D44F /* UserCredentials */,
+				621F2B5616BDAA0D00A97E67 /* CreateNewUserViewController */,
 			);
 			path = GreenBeansMerch;
 			sourceTree = "<group>";
@@ -1379,6 +1395,7 @@
 				62AB2A9316BC6E2D0021D44F /* dropdown-alert.png in Resources */,
 				62AB2A9416BC6E2D0021D44F /* dropdown-alert@2x.png in Resources */,
 				62AB2A9616BC80DC0021D44F /* tabbar_bg_center_ipad.png in Resources */,
+				621F2B5516BDAA0200A97E67 /* CreateNewUserViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1446,6 +1463,7 @@
 				62AB2A7916BC497D0021D44F /* RootViewController_iPad.m in Sources */,
 				62AB2A7F16BC53610021D44F /* LoginViewController_iPad.m in Sources */,
 				62AB2A9016BC6E0F0021D44F /* YRDropdownView.m in Sources */,
+				621F2B5416BDAA0200A97E67 /* CreateNewUserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

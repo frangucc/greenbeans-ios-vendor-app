@@ -143,7 +143,7 @@
     createLoginButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 320, 200, 35)];
     [createLoginButton setBackgroundImage:[UIImage imageNamed:@"gray-action-button-background"] forState:UIControlStateNormal];
     [createLoginButton setBackgroundImage:[UIImage imageNamed:@"gray-action-button-background-pressed"] forState:UIControlStateHighlighted];
-    /* [createLoginButton addTarget:self action:@selector(showProgress) forControlEvents:UIControlEventTouchUpInside]; */
+    [createLoginButton addTarget:self action:@selector(createNewUserView:) forControlEvents:UIControlEventTouchUpInside];
     [createLoginButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
     [createLoginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [createLoginButton setTitle:@"Create Account" forState:UIControlStateNormal];
@@ -152,7 +152,11 @@
     [self.view addSubview:createLoginButton];
 } /* drawCreateLoginButton */
 
-
+- (void)createNewUserView:(id)sender
+{
+    CreateNewUserViewController *cnuvc = [[CreateNewUserViewController alloc] initWithNibName:@"Sample" bundle:[NSBundle mainBundle]];
+    [self.navigationController pushViewController:cnuvc animated:YES];
+}
 /*
    ViewWillAppear
    --------

@@ -194,7 +194,7 @@
         int x     = 20, y = 185;
         while (count <= 10) {
             /* Box Label ~ [CustomUI makeLabel] */
-            UIButton *box_button = [CustomUI makeButton:[NSString stringWithFormat:@"%@", [NSNumber numberWithInt:count]] title_font:[UIFont fontWithName:@"HelveticaNeue-Bold" size:29] x_value:x y_value:y width:48 height:48 back_image_normal:[UIImage imageNamed:@"number-print-background-gray"] back_state_normal:UIControlStateNormal back_image_selected:[UIImage imageNamed:@"number-print-background-green"] back_state_selected:UIControlStateSelected tag:count t_color_normal:[UIColor darkGrayColor] t_color_selected:[UIColor whiteColor]];
+            UIButton *box_button = [CustomUI makeButton:[NSString stringWithFormat:@"%@", [NSNumber numberWithInt:count]] title_font:[UIFont fontWithName:@"HelveticaNeue-Bold" size:22] x_value:x y_value:y width:48 height:48 back_image_normal:[UIImage imageNamed:@"number-print-background-gray"] back_state_normal:UIControlStateNormal back_image_selected:[UIImage imageNamed:@"number-print-background-green"] back_state_selected:UIControlStateSelected tag:count t_color_normal:[UIColor darkGrayColor] t_color_selected:[UIColor whiteColor]];
             [box_button addTarget:self action:@selector(buttonStateHandler:) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:box_button];
 

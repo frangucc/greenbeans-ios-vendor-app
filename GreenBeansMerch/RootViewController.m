@@ -38,7 +38,7 @@
  */
 - (void) drawView {
     UIView *windowFrame = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
-    UIImage *targetImage = [UIImage imageNamed:@"merchant-background"];
+    UIImage *targetImage = [UIImage imageNamed:@"Default"];
 
     UIGraphicsBeginImageContextWithOptions(windowFrame.frame.size, NO, 0.f);
     [targetImage drawInRect:CGRectMake(0.f, 0.f, windowFrame.frame.size.width, windowFrame.frame.size.height)];
