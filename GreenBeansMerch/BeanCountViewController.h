@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "MiniPrinterFunctions.h"
 #import "PrinterFunctions.h"
-#import "DisconnectServer.h"
+#import "DisconnectServer.h"d
 #import "RNBlurModalView.h"
 #import "CustomUI.h"
 #import <QuartzCore/QuartzCore.h>
